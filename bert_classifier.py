@@ -1,10 +1,13 @@
 import os
+from tqdm import tqdm
+from typing import List
 from argparse import ArgumentParser
 from transformers import BertForSequenceClassification, BertTokenizer, BertConfig
 from fastai import *
 from fastai.text import *
 from fastai.callbacks import *
 import torch
+from torch.utils.data import DataLoader, Dataset
 import torch.nn as nn
 
 parser = ArgumentParser()
@@ -22,13 +25,24 @@ parser.add_argument("--seq_len", type=int, default=512,
                     )
 
 
+class InputIDsSequences(Dataset):
+    def __init__(self, id_sequences : List[List[int]]):
+        self.id_sequences = id_sequences
+    
+    def __len__(self):
+        return len(self.id_sequences)
+    
+    def __getitem__(self, idx):
+        return self.id_sequences[idx]
+
+
 class BertForClassification():
     def __init__(self, model: nn.Module, tokenizer: BertTokenizer, seq_length: int, path_to_labels: str):
         self.tokenizer = tokenizer
         self.model = model
         self.max_len = seq_length
         self.label_dict = self._get_label_dict(path_to_labels)
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=0)
 
         self.model.eval()
 
@@ -50,16 +64,43 @@ class BertForClassification():
         with open(output_file, "w") as fout:
             json.dump(data, fout, indent=2)
     
-    
-    def predict(self, input_sentence: str) -> str:
+    def prepare_batches(self, text_inputs: List[str], batch_size: int) -> DataLoader:
+        id_sequences = []
+        for sequence in tqdm(text_inputs, desc="- Sequences to encode"):
+            encoded_sequence = self.tokenizer.encode(sequence, max_length=self.max_len, add_special_tokens=True, pad_to_max_length=True)
+            id_sequences.append(torch.tensor(encoded_sequence))
+        
+        sequences_dl = InputIDsSequences(id_sequences)
+
+        return DataLoader(sequences_dl, batch_size=batch_size)
+
+    def _convert_outputs_to_scores(self, outputs: torch.tensor) -> (str, torch.tensor):
+        classes_and_scores = []
+
+        for output in outputs:
+            scores = self.softmax(output)
+            index = scores.argmax().item()
+
+            classes_and_scores.append((self.label_dict[index], scores))
+        
+        return classes_and_scores
+
+    def predict_on_batches(self, dataloader: DataLoader) -> List[torch.tensor]:
+        classes_and_scores = []
+        for batch in dataloader:
+            outputs = self.model(batch)
+            classes_and_scores.append(self._convert_outputs_to_scores(outputs))
+        
+        return classes_and_scores
+
+    def predict(self, input_sentence: str) -> (str, torch.tensor):
         encoded_sentence = self._encode(input_sentence)
         tensor_input =  torch.tensor(encoded_sentence).unsqueeze(0)
         output = self.model(tensor_input)
-        scores = self.softmax(output)
-
-        index = scores.argmax().item()
         
-        return self.label_dict[index], scores
+        return self._convert_outputs_to_scores([output.squeeze()])[0]
+        
+        
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -68,7 +109,11 @@ if __name__ == "__main__":
     tokenizer = BertTokenizer.from_pretrained(args.tokenizer)
 
     bert = BertForClassification(model, tokenizer, args.seq_len, args.labels)
-    
+    teste = bert.prepare_batches(["Eu to feliz", "Eu to muito feliz", "Eu to muito triste"], 2)
+    # for i in teste:
+    #     print(bert.model(i).shape)
+    # print(bert.prepare_batches(["teste1", "teste outro", "mais teste"], 2).shape)
+    print(bert.predict_on_batches(teste))
     print("Pronto")
     while True:
         sentence = input()
