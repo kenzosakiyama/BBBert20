@@ -37,7 +37,8 @@ class InputIDsSequences(Dataset):
 
 
 class BertForClassification():
-    def __init__(self, model: nn.Module, tokenizer: BertTokenizer, seq_length: int, path_to_labels: str):
+    def __init__(self, model: nn.Module, tokenizer: BertTokenizer, seq_length: int, path_to_labels: str, gpu: bool = False):
+        self.gpu = gpu
         self.tokenizer = tokenizer
         self.model = model
         self.max_len = seq_length
@@ -93,9 +94,9 @@ class BertForClassification():
         with torch.no_grad():
             for batch in tqdm(dataloader, desc="- Batches to predict"):
                 # print(batch.shape)
+                if self.gpu: batch = batch.cuda()
                 outputs = self.model(batch)
                 classes_and_scores.extend(self._convert_outputs_to_scores(outputs))
-                break
             
         return classes_and_scores
 

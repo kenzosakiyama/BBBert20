@@ -5,18 +5,47 @@ from typing import List
 from tqdm import tqdm
 import re
 import torch
+from argparse import ArgumentParser
 
-PATH = "/data/lucasrodrigues/tweets/BabuSantana_1p.csv"
-MODEL = "../../bert_classifier"
+PATH = "/home/kenzo/bbb20/BabuSantana_1p.csv"
+MODEL = "/home/kenzo/bbb20/bert_classifier"
+
+parser = ArgumentParser()
+parser.add_argument("--file", type=str, required=True,
+                    help="Path to the candidate file csv."
+                    )
+parser.add_argument("--output", type=str, required=True,
+                    help="Path to the candidate file csv."
+                    )
+parser.add_argument("--learner_path", type=str, required=True,
+                    help="Path to the learner exported object."
+                    )
+parser.add_argument("--tokenizer", type=str, required=True,
+                    help="Path to the tokenizer."
+                    )
+parser.add_argument("--labels", type=str, required=True,
+                    help="Path to the tabels."
+                    )
+parser.add_argument("--seq_len", type=int, default=512,
+                    help="Maximum sequence length for the model."
+                    )
+parser.add_argument("--bs", type=int, default=16,
+                    help="Batch size for inference."
+                    )
+
+parser.add_argument("--gpu",  action='store_true',
+                    help="Batch size for inference."
+                    )
 
 
 class CandidateAnalyser:
 
-    def __init__(self, classifier: BertForClassification, file: str):
+    def __init__(self, classifier: BertForClassification, file: str, bs: int):
         self.tweet_data = self._get_df(file)
         self.tweet_processor = self._get_text_processor()
         self.cleaned_tweets = self._clean_tweets()
         self.classifier = classifier
+        self.bs = bs
     
     def _get_text_processor(self):
         # Text TextPreProcessor
@@ -52,23 +81,42 @@ class CandidateAnalyser:
             
         return predictions
 
-    def get_statistics(self):
-        tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets, 32)
+    def get_statistics(self, output_file: str) -> None:
+        tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets, self.bs)
         # tweet_dl = self.cleaned_tweets[:1000]
         predictions = self._get_predictions(tweet_dl)
 
+        sentiments = []
+        neutral_scores = []
+        positive_scores = []
+        negative_scores = []
 
-        #TODO: adicionar uma coluna de estatiscas la
+        for prediction in tqdm(predictions, desc= "- Analysing"):
+            sentiments.append(prediction[0])
+            scores = prediction[1].squeeze()
+            neutral_scores.append(scores[0].item())
+            positive_scores.append(scores[1].item())
+            negative_scores.append(scores[2].item())
+
+        self.tweet_data["sentiment"] = sentiments
+        self.tweet_data["negative_score"] = negative_scores
+        self.tweet_data["neutral_score"] = neutral_scores
+        self.tweet_data["positive_score"] = positive_scores
+        
+        self.tweet_data.to_csv(output_file, index=False)
         
 
 if __name__ == "__main__":
+    args = parser.parse_args()
+    learner = load_learner(args.learner_path)
+    model = learner.model
 
-    learner = load_learner(MODEL)
-    model = learner.model.cpu()
-    tokenizer = BertTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
+    if not args.gpu: model = model.cpu()
+    
+    tokenizer = BertTokenizer.from_pretrained(args.tokenizer)
 
-    bert = BertForClassification(model, tokenizer, 512, "labels.txt")
+    bert = BertForClassification(model, tokenizer, args.seq_len, args.labels, gpu=args.gpu)
 
-    oi = CandidateAnalyser(bert, PATH)
+    oi = CandidateAnalyser(bert, args.file, args.bs)
 
-    oi.get_statistics()
+    oi.get_statistics(args.output)
