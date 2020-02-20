@@ -66,19 +66,22 @@ class BertForClassification():
     
     def prepare_batches(self, text_inputs: List[str], batch_size: int) -> DataLoader:
         id_sequences = []
+        # print(text_inputs[:2])
         for sequence in tqdm(text_inputs, desc="- Sequences to encode"):
             encoded_sequence = self.tokenizer.encode(sequence, max_length=self.max_len, add_special_tokens=True, pad_to_max_length=True)
             id_sequences.append(torch.tensor(encoded_sequence))
         
+        # print(id_sequences[:3])
         sequences_dl = InputIDsSequences(id_sequences)
 
         return DataLoader(sequences_dl, batch_size=batch_size)
+        # return sequences_dl
 
     def _convert_outputs_to_scores(self, outputs: torch.tensor) -> (str, torch.tensor):
         classes_and_scores = []
 
         for output in outputs:
-            scores = self.softmax(output)
+            scores = self.softmax(output, )
             index = scores.argmax().item()
 
             classes_and_scores.append((self.label_dict[index], scores))
@@ -87,10 +90,13 @@ class BertForClassification():
 
     def predict_on_batches(self, dataloader: DataLoader) -> List[torch.tensor]:
         classes_and_scores = []
-        for batch in dataloader:
-            outputs = self.model(batch)
-            classes_and_scores.append(self._convert_outputs_to_scores(outputs))
-        
+        with torch.no_grad():
+            for batch in tqdm(dataloader, desc="- Batches to predict"):
+                # print(batch.shape)
+                outputs = self.model(batch)
+                classes_and_scores.extend(self._convert_outputs_to_scores(outputs))
+                break
+            
         return classes_and_scores
 
     def predict(self, input_sentence: str) -> (str, torch.tensor):

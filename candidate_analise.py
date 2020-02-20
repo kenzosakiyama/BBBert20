@@ -7,6 +7,7 @@ import re
 import torch
 
 PATH = "/data/lucasrodrigues/tweets/BabuSantana_1p.csv"
+MODEL = "../../bert_classifier"
 
 
 class CandidateAnalyser:
@@ -43,8 +44,31 @@ class CandidateAnalyser:
         
         return cleaned_tweets
     
-    def get_statistics(self):
-        tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets)
+    def _get_predictions(self, tweet_dl: DataLoader) -> List[tuple]:
 
-        for batch in tqdm(tweet_dl):
-            print()self.classifier.predict_on_batches(batch)
+        # predictions = []
+
+        predictions = self.classifier.predict_on_batches(tweet_dl)
+            
+        return predictions
+
+    def get_statistics(self):
+        tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets, 32)
+        # tweet_dl = self.cleaned_tweets[:1000]
+        predictions = self._get_predictions(tweet_dl)
+
+
+        #TODO: adicionar uma coluna de estatiscas la
+        
+
+if __name__ == "__main__":
+
+    learner = load_learner(MODEL)
+    model = learner.model.cpu()
+    tokenizer = BertTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
+
+    bert = BertForClassification(model, tokenizer, 512, "labels.txt")
+
+    oi = CandidateAnalyser(bert, PATH)
+
+    oi.get_statistics()
