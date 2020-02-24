@@ -7,9 +7,6 @@ import re
 import torch
 from argparse import ArgumentParser
 
-PATH = "/home/kenzo/bbb20/BabuSantana_1p.csv"
-MODEL = "/home/kenzo/bbb20/bert_classifier"
-
 parser = ArgumentParser()
 parser.add_argument("--file", type=str, required=True,
                     help="Path to the candidate file csv."
@@ -38,7 +35,9 @@ parser.add_argument("--gpu",  action='store_true',
                     )
 
 
-class CandidateAnalyser:
+class TweetAnalyser:
+
+    IGNORE = ['url', 'email', 'percent', 'money', 'phone', 'user', 'time', 'date', 'number', 'hashtag']
 
     def __init__(self, classifier: BertForClassification, file: str, bs: int):
         self.tweet_data = self._get_df(file)
@@ -81,7 +80,7 @@ class CandidateAnalyser:
             
         return predictions
 
-    def get_statistics(self, output_file: str) -> None:
+    def get_statistics(self, output_file: str) -> pd.DataFrame:
         tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets, self.bs)
         # tweet_dl = self.cleaned_tweets[:1000]
         predictions = self._get_predictions(tweet_dl)
@@ -104,6 +103,8 @@ class CandidateAnalyser:
         self.tweet_data["positive_score"] = positive_scores
         
         self.tweet_data.to_csv(output_file, index=False)
+
+        return self.tweet_data
         
 
 if __name__ == "__main__":
@@ -117,6 +118,6 @@ if __name__ == "__main__":
 
     bert = BertForClassification(model, tokenizer, args.seq_len, args.labels, gpu=args.gpu)
 
-    oi = CandidateAnalyser(bert, args.file, args.bs)
+    oi = TweetAnalyser(bert, args.file, args.bs)
 
     oi.get_statistics(args.output)
