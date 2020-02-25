@@ -1,13 +1,14 @@
 from ekphrasis.classes.preprocessor import TextPreProcessor 
 from typing import List, Iterable
 from tqdm import tqdm
+import re
 
 class TweetCleaner:
 
-    # TODO: Add more OO
+    RE_REMOVE_PIC = re.compile(r"pic.twitter.com\S+")
 
     def __init__(self, omit: List[str], normalize: List[str]):
-        self.processor = self._get_text_processor()
+        self.processor = self._get_text_processor(omit, normalize)
 
     def _get_text_processor(self, omit: List[str], normalize: List[str]):
         # Text TextPreProcessor
@@ -27,6 +28,7 @@ class TweetCleaner:
         cleaned_tweets = []
 
         for tweet in tqdm(tweets, desc="- Cleaning tweets"):
-            cleaned_tweets.append(self.processor.pre_process_doc(tweet))
+            cleaned_tweet = self.processor.pre_process_doc(tweet)
+            cleaned_tweets.append(TweetCleaner.RE_REMOVE_PIC.sub("", cleaned_tweet))
         
         return cleaned_tweets

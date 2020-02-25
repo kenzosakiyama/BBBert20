@@ -1,5 +1,5 @@
 from bert_classifier import *
-from ekphrasis.classes.preprocessor import TextPreProcessor 
+from tweet_cleaner import TweetCleaner
 import pandas as pd
 from typing import List
 from tqdm import tqdm
@@ -41,40 +41,22 @@ class TweetAnalyser:
 
     def __init__(self, classifier: BertForClassification, file: str, bs: int):
         self.tweet_data = self._get_df(file)
-        self.tweet_processor = self._get_text_processor()
-        self.cleaned_tweets = self._clean_tweets()
+        self.tweet_processor = TweetCleaner(TweetAnalyser.IGNORE, TweetAnalyser.IGNORE)
+        self.cleaned_tweets = self._tweet_preprocessing()
         self.classifier = classifier
         self.bs = bs
-    
-    def _get_text_processor(self):
-        # Text TextPreProcessor
-        text_processor = TextPreProcessor(
-            omit=['url', 'email', 'percent', 'money', 'phone', 'user', 'time', 'date', 'number', 'hashtag'],
-            normalize=['url', 'email', 'percent', 'money', 'phone', 'user', 'time', 'date', 'number', 'hashtag'],
-            fix_html=True,
-            segmenter="twitter",
-            corrector="twitter",
-            unpack_hashtags=False,
-            unpack_contractions=False,
-            spell_correct_elong=True
-        )
-        return text_processor
-
 
     def _get_df(self, file: str) -> pd.DataFrame:
         return pd.read_csv(file)
     
-    def _clean_tweets(self) -> List[str]:
-        cleaned_tweets = []
+    def _tweet_preprocessing(self) -> List[str]:
 
-        for tweet in tqdm(self.tweet_data["tweet"].astype(str), desc="- Cleaning tweets"):
-            cleaned_tweets.append(self.tweet_processor.pre_process_doc(tweet))
+        tweets = self.tweet_data["tweet"].astype(str)
         
-        return cleaned_tweets
+        return self.tweet_processor.clean_tweets(tweets)
+
     
     def _get_predictions(self, tweet_dl: DataLoader) -> List[tuple]:
-
-        # predictions = []
 
         predictions = self.classifier.predict_on_batches(tweet_dl)
             
@@ -82,7 +64,6 @@ class TweetAnalyser:
 
     def get_statistics(self, output_file: str) -> pd.DataFrame:
         tweet_dl = self.classifier.prepare_batches(self.cleaned_tweets, self.bs)
-        # tweet_dl = self.cleaned_tweets[:1000]
         predictions = self._get_predictions(tweet_dl)
 
         sentiments = []
