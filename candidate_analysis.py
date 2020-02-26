@@ -37,7 +37,7 @@ parser.add_argument("--gpu",  action='store_true',
 
 class TweetAnalyser:
 
-    IGNORE = ['url', 'email', 'percent', 'money', 'phone', 'user', 'time', 'date', 'number', 'hashtag']
+    IGNORE = ['url', 'email', 'percent', 'money', 'phone', 'time', 'date', 'number']
 
     def __init__(self, classifier: BertForClassification, file: str, bs: int):
         self.tweet_data = self._get_df(file)

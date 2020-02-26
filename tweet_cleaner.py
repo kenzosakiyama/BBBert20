@@ -18,7 +18,7 @@ class TweetCleaner:
             fix_html=True,
             segmenter="twitter",
             corrector="twitter",
-            unpack_hashtags=False,
+            unpack_hashtags=True,
             unpack_contractions=False,
             spell_correct_elong=True
         )
