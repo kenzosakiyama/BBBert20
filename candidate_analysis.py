@@ -8,7 +8,9 @@ import torch
 from argparse import ArgumentParser
 
 '''
+
 python3 candidate_analysis.py --file ../../BabuSantana.csv --output analysis/data/paredao7/babu.csv --learner_path ../../bbb20/bert_classifier/ --tokenizer neuralmind/bert-base-portuguese-cased --labels labels.txt --bs 256 --gpu
+
 '''
 
 parser = ArgumentParser()
