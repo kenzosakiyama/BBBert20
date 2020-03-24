@@ -1,142 +1,134 @@
-[
-   {
-    "paredao": 1,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "lucas_chumbo",
-            "porcentagem": 75.94
-        },
-        {
-            "nome": "bianca_andrade",
-            "porcentagem": 24.46
-        }
-    ]
-   },
-   {
-    "paredao": 2,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "babu",
-            "porcentagem": 0.44
-        },
-        {
-            "nome": "pyong",
-            "porcentagem": 0.66
-        },
-        {
-            "nome": "hadson",
-            "porcentagem": 18.63
-        },
-        {
-            "nome": "petrix",
-            "porcentagem": 80.27
-        }
-    ]
-    },
-    {
-    "paredao": 3,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "felipe_prior",
-            "porcentagem": 20.29
-        },
-        {
-            "nome": "hadson",
-            "porcentagem": 79.71
-        }
-    ]
-    },
-    {
-    "paredao": 4,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "babu",
-            "porcentagem": 1.3
-        },
-        {
-            "nome": "victor_hugo",
-            "porcentagem": 36.08
-        },
-        {
-            "nome": "lucas",
-            "porcentagem": 62.62
-        }
-    ]
-    },
-    {
-    "paredao": 5,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "bianca_andrade",
-            "porcentagem": 53.09
-        },
-        {
-            "nome": "felipe_prior",
-            "porcentagem": 29.27
-        },
-        {
-            "nome": "flayslene",
-            "porcentagem": 17.64
-        }
-    ]
-    },
-    {
-    "paredao": 6,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "guilherme",
-            "porcentagem": 56.07
-        },
-        {
-            "nome": "pyong",
-            "porcentagem": 43.29
-        },
-        {
-            "nome": "gizelly",
-            "porcentagem": 0.64
-        }
-    ]
-    },
-    {
-    "paredao": 7,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "victor_hugo",
-            "porcentagem": 85.22
-        },
-        {
-            "nome": "manu_gavassi",
-            "porcentagem": 10.18
-        },
-        {
-            "nome": "babu",
-            "porcentagem": 4.6
-        }
+{
+    "paredao1": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "lucas_chumbo",
+                "porcentagem": 75.94
+            },
+            {
+                "nome": "bianca_andrade",
+                "porcentagem": 24.46
+            }
         ]
     },
-    {
-    "paredao": 8,
-    "quantidade_de_votos": 0,
-    "candidatos": [
-        {
-            "nome": "pyong",
-            "porcentagem": 51.7
-        },
-        {
-            "nome": "babu",
-            "porcentagem": 47.71
-        },
-        {
-            "nome": "rafa",
-            "porcentagem": 0.59
-        }
-    ]
+    "paredao2": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "babu",
+                "porcentagem": 0.44
+            },
+            {
+                "nome": "pyong",
+                "porcentagem": 0.66
+            },
+            {
+                "nome": "hadson",
+                "porcentagem": 18.63
+            },
+            {
+                "nome": "petrix",
+                "porcentagem": 80.27
+            }
+        ]
+    },
+    "paredao3": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "felipe_prior",
+                "porcentagem": 20.29
+            },
+            {
+                "nome": "hadson",
+                "porcentagem": 79.71
+            }
+        ]
+    },
+    "paredao4": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "babu",
+                "porcentagem": 1.3
+            },
+            {
+                "nome": "victor_hugo",
+                "porcentagem": 36.08
+            },
+            {
+                "nome": "lucas",
+                "porcentagem": 62.62
+            }
+        ]
+    },
+    "paredao5": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "bianca_andrade",
+                "porcentagem": 53.09
+            },
+            {
+                "nome": "felipe_prior",
+                "porcentagem": 29.27
+            },
+            {
+                "nome": "flayslene",
+                "porcentagem": 17.64
+            }
+        ]
+    },
+    "paredao6": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "guilherme",
+                "porcentagem": 56.07
+            },
+            {
+                "nome": "pyong",
+                "porcentagem": 43.29
+            },
+            {
+                "nome": "gizelly_bicalho",
+                "porcentagem": 0.64
+            }
+        ]
+    },
+    "paredao7": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "victor_hugo",
+                "porcentagem": 85.22
+            },
+            {
+                "nome": "manu_gavassi",
+                "porcentagem": 10.18
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 4.6
+            }
+        ]
+    },
+    "paredao8": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "pyong",
+                "porcentagem": 51.7
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 47.71
+            },
+            {
+                "nome": "rafa",
+                "porcentagem": 0.59
+            }
+        ]
     }
-]
+}

@@ -1,82 +1,66 @@
-[
-  {
-    "nome": "babu",
+{
+  "babu": {
     "conta": "BabuSantana",
-    "seguidores": 313832
+    "seguidores": 317268
   },
-  {
-    "nome": "felipe_prior",
+  "felipe_prior": {
     "conta": "felipeprior",
-    "seguidores": 189252
+    "seguidores": 191901
   },
-  {
-    "nome": "pyong",
+  "pyong": {
     "conta": "PyongLeeTV",
-    "seguidores": 1417558
+    "seguidores": 1419089
   },
-  {
-    "nome": "daniel",
+  "daniel": {
     "conta": "DanielLenhardt_",
-    "seguidores": 33914
+    "seguidores": 34074
   },
-  {
-    "nome": "gizelly_bicalho",
+  "gizelly_bicalho": {
     "conta": "gizellybicalho_",
-    "seguidores": 231371
+    "seguidores": 232214
   },
-  {
-    "nome": "marcela",
+  "marcela": {
     "conta": "marcelamcgowan",
-    "seguidores": 149710
+    "seguidores": 149867
   },
-  {
-    "nome": "lucas",
+  "lucas": {
     "conta": "LucasBGallina",
-    "seguidores": 22369
+    "seguidores": 22688
   },
-  {
-    "nome": "hadson",
+  "hadson": {
     "conta": "HadsonNery",
-    "seguidores": 9504
+    "seguidores": 9524
   },
-  {
-    "nome": "lucas_chumbo",
+  "lucas_chumbo": {
     "conta": "lucaschumbo",
-    "seguidores": 11521
+    "seguidores": 11665
   },
-  {
-    "nome": "bianca_andrade",
+  "bianca_andrade": {
     "conta": "BiaAndradeOfc",
-    "seguidores": 406367
+    "seguidores": 407828
   },
-  {
-    "nome": "petrix",
+  "petrix": {
     "conta": "petrixbarbosa",
-    "seguidores": 21921
+    "seguidores": 22082
   },
-  {
-    "nome": "victor_hugo",
+  "victor_hugo": {
     "conta": "victorhugotex",
-    "seguidores": 13949
+    "seguidores": 14044
   },
-  {
-    "nome": "guilherme",
+  "guilherme": {
     "conta": "guinapolitano",
-    "seguidores": 100521
+    "seguidores": 101125
   },
-  {
-    "nome": "manu_gavassi",
+  "manu_gavassi": {
     "conta": "manugavassi",
-    "seguidores": 4292854
+    "seguidores": 4298841
   },
-  {
-    "nome": "rafa",
+  "rafa": {
     "conta": "rafakalimann_",
-    "seguidores": 279889
+    "seguidores": 282244
   },
-  {
-    "nome": "flayslene",
+  "flayslene": {
     "conta": "laneeoficial",
-    "seguidores": 98248
+    "seguidores": 99593
   }
-]
+}

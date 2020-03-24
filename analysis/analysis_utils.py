@@ -38,11 +38,8 @@ def get_paredoes_info() -> dict:
     return load_json("../infos/paredoes_info.json")
 
 def get_participantes_info() -> dict:
-    infos = load_json("../infos/participantes_info.json")
 
-    #TODO: editar se adicionar mais informações
-    formated_info = {participante["nome"]: participante["seguidores"] for participante in infos}
-    return formated_info
+    return load_json("../infos/participantes_info.json")
 
 if __name__ == "__main__":
     pass

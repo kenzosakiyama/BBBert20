@@ -27,12 +27,12 @@ if __name__ == "__main__":
     with open("participantes_info.json", "r") as f:
         participantes_info = json.load(f)
     
-    for participante in participantes_info:
-        user = participante["conta"]
+    for participante in participantes_info.keys():
+        user = participantes_info[participante]["conta"]
         user_info = api.get_user(user)
         followers = user_info.followers_count
         print(f"Participante {user}, seguidores: {followers}")
-        participante["seguidores"] = followers 
+        participantes_info[participante]["seguidores"] = followers 
     
     with open("participantes_info.json", "w") as fout:
         json.dump(participantes_info, fout, indent=2)
