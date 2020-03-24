@@ -1,7 +1,8 @@
 from typing import List
 import pandas as pd 
+import json
 
-def get_raw_quantities(candidates: List[pd.DataFrame]):
+def get_raw_quantities(candidates: List[pd.DataFrame]) -> pd.DataFrame:
 
     statistics = {"nome": [], "positivos": [], "neutros": [], "negativos": []}
 
@@ -14,7 +15,7 @@ def get_raw_quantities(candidates: List[pd.DataFrame]):
 
     return pd.DataFrame.from_dict(statistics).set_index("nome")
 
-def get_pct_by_candidate(candidates: List[pd.DataFrame]):
+def get_pct_by_candidate(candidates: List[pd.DataFrame]) -> pd.DataFrame:
 
     raw_quantities = get_raw_quantities(candidates)
     tweets_per_candidate = []
@@ -24,6 +25,24 @@ def get_pct_by_candidate(candidates: List[pd.DataFrame]):
         tweets_per_candidate.append(qtd)
     
     return raw_quantities.div(tweets_per_candidate, axis=0)
+
+def load_json(file: str) -> dict:
+
+    with open(file, "r") as f:
+        loaded_json = json.load(f)
+    
+    return loaded_json
+
+def get_paredoes_info() -> dict:
+
+    return load_json("../infos/paredoes_info.json")
+
+def get_participantes_info() -> dict:
+    infos = load_json("../infos/participantes_info.json")
+
+    #TODO: editar se adicionar mais informações
+    formated_info = {participante["nome"]: participante["seguidores"] for participante in infos}
+    return formated_info
 
 if __name__ == "__main__":
     pass
