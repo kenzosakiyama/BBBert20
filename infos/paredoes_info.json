@@ -130,5 +130,22 @@
                 "porcentagem": 0.59
             }
         ]
+    },
+    "paredao9": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "daniel",
+                "porcentagem": 80.82
+            },
+            {
+                "nome": "flayslene",
+                "porcentagem": 9.54
+            },
+            {
+                "nome": "ivy",
+                "porcentagem": 9.64
+            }
+        ]
     }
 }
