@@ -41,5 +41,28 @@ def get_participantes_info() -> dict:
 
     return load_json("../infos/participantes_info.json")
 
+def get_likes_count(cand_df: pd.DataFrame) -> int:
+    
+    return cand_df["likes_count"].sum()
+
+def get_retweets_count(cand_df: pd.DataFrame) -> int:
+    
+    return cand_df["retweets_count"].sum()
+
+def get_tweets_by_day(cand_df: pd.DataFrame, cand_name: str) -> pd.DataFrame:
+    
+    cand_df["date"] = pd.to_datetime(cand_df["date"])
+
+    days = cand_df["date"].dt.day.unique()
+    days.sort()
+
+    day_info = {}
+
+    for i, day in enumerate(days):
+        day_info[f"day{i+1}"] = (cand_df["date"].dt.day == day).sum()
+
+    return pd.DataFrame(day_info, index=[cand_name])
+
+
 if __name__ == "__main__":
     pass
