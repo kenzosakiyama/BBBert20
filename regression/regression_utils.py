@@ -4,7 +4,13 @@ import os
 from typing import Tuple
 
 PATH_TO_DATA = "../analysis/data/"
-COLUMNS = ["paredao", "nome", "positivos", "neutros","negativos", "positivos_pct", "neutros_pct", "negativos_pct", "seguidores", "rejeicao"]
+COLUMNS = ["paredao", "nome", 
+           "positivos", "neutros","negativos", 
+           "positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct",
+           "positivos_global_pct", "neutros_global_pct", "negativos_global_pct",
+           "day1", "day2", "day3",
+           "likes", "retweets", "seguidores",
+           "rejeicao"]
 
 def zscore_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataFrame:
     
