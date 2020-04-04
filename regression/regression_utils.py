@@ -27,12 +27,20 @@ def zscore_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataF
     
     return df, y_mean, y_std
 
+def fix_types(df: pd.DataFrame) -> pd.DataFrame:
+
+    for column in df.columns[2:]:
+        if df[column].dtype == "O": df[column] = df[column].astype(int)
+
+    return df
+
 def get_train_test(test_paredao: int, normalize: bool = True, classification: bool = False) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     paredoes = os.listdir(PATH_TO_DATA)
     data_df = pd.DataFrame(columns=COLUMNS)
 
     for paredao in paredoes:
+        if not os.path.exists(os.path.join(PATH_TO_DATA, paredao, "paredao_atributes.csv")): continue
         current = pd.read_csv(os.path.join(PATH_TO_DATA, paredao, "paredao_atributes.csv"))
 
         if classification:
@@ -44,6 +52,8 @@ def get_train_test(test_paredao: int, normalize: bool = True, classification: bo
         number = int(paredao.replace("paredao", ""))
         current["paredao"] = [number] * len(current)
         data_df = data_df.append(current, ignore_index=True, sort=False)
+
+    data_df= fix_types(data_df)
 
     if normalize: data_df, mean, std = zscore_normalize(data_df, classification=classification)
 
