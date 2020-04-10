@@ -147,5 +147,56 @@
                 "porcentagem": 9.64
             }
         ]
+    },
+    "paredao10": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "felipe_prior",
+                "porcentagem": 56.73
+            },
+            {
+                "nome": "manu_gavassi",
+                "porcentagem": 42.51
+            },
+            {
+                "nome": "mari",
+                "porcentagem": 0.76
+            }
+        ]
+    },
+    "paredao11": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "gabi",
+                "porcentagem": 59.61
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 36.28
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 4.11
+            }
+        ]
+    },
+    "paredao12": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "marcela",
+                "porcentagem": 49.76
+            },
+            {
+                "nome": "flayslene",
+                "porcentagem": 49.18
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 1.06
+            }
+        ]
     }
 }
