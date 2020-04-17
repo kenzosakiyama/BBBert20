@@ -57,7 +57,8 @@ class TweetAnalyser:
     
     def _tweet_preprocessing(self) -> List[str]:
 
-        tweets = self.tweet_data["tweet"].astype(str)
+        field = "tweet" if "tweet" in self.tweet_data.columns else "text"
+        tweets = self.tweet_data[field].astype(str)
         
         return self.tweet_processor.clean_tweets(tweets)
 
