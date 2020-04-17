@@ -1,7 +1,7 @@
 import pandas as pd 
 import numpy as np
 import os 
-from typing import Tuple
+from typing import Tuple, List
 
 PATH_TO_DATA = "../analysis/data/"
 COLUMNS = ["paredao", "nome", 
@@ -34,7 +34,7 @@ def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def get_train_test(test_paredao: int, normalize: bool = True, classification: bool = False) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_train_test(test_paredao: int, normalize: bool = True, classification: bool = False, drop_columns: List[str] = []) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     paredoes = os.listdir(PATH_TO_DATA)
     data_df = pd.DataFrame(columns=COLUMNS)
@@ -53,8 +53,8 @@ def get_train_test(test_paredao: int, normalize: bool = True, classification: bo
         current["paredao"] = [number] * len(current)
         data_df = data_df.append(current, ignore_index=True, sort=False)
 
-    data_df= fix_types(data_df)
-
+    data_df = fix_types(data_df)
+    if len(drop_columns) > 0: data_df.drop(drop_columns, axis=1, inplace=True)
     if normalize: data_df, mean, std = zscore_normalize(data_df, classification=classification)
 
     test_df = data_df[data_df["paredao"] == test_paredao]
