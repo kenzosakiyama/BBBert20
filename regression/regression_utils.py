@@ -54,8 +54,8 @@ def get_train_test(test_paredao: int, normalize: bool = True, classification: bo
         data_df = data_df.append(current, ignore_index=True, sort=False)
 
     data_df = fix_types(data_df)
-    if len(drop_columns) > 0: data_df.drop(drop_columns, axis=1, inplace=True)
     if normalize: data_df, mean, std = zscore_normalize(data_df, classification=classification)
+    if len(drop_columns) > 0: data_df.drop(columns=drop_columns, inplace=True)
 
     test_df = data_df[data_df["paredao"] == test_paredao]
     train_df = data_df.drop(index=test_df.index, axis=0)
