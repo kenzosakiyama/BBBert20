@@ -3,6 +3,8 @@ import json
 import os
 from argparse import ArgumentParser
 from dotenv import load_dotenv
+from datetime import datetime
+from copy import deepcopy
 
 parser = ArgumentParser()
 parser.add_argument("--credentials_folder", type=str, required=True)
@@ -27,12 +29,17 @@ if __name__ == "__main__":
     with open("participantes_info.json", "r") as f:
         participantes_info = json.load(f)
     
-    for participante in participantes_info.keys():
-        user = participantes_info[participante]["conta"]
+    last_info = deepcopy(participantes_info[-1])
+    participantes_info.append(last_info)
+    last_info["date"] = str(datetime.now())
+    update_info= last_info["infos"]
+
+    for participante in update_info.keys():
+        user = update_info[participante]["conta"]
         user_info = api.get_user(user)
         followers = user_info.followers_count
         print(f"Participante {user}, seguidores: {followers}")
-        participantes_info[participante]["seguidores"] = followers 
+        update_info[participante]["seguidores"] = followers 
     
     with open("participantes_info.json", "w") as fout:
         json.dump(participantes_info, fout, indent=2)
