@@ -10,6 +10,7 @@ COLUMNS = ["paredao", "nome",
            "positivos_global_pct", "neutros_global_pct", "negativos_global_pct",
            "day1", "day2", "day3",
            "likes", "retweets", "seguidores",
+           "fica", "fora",
            "rejeicao"]
 
 def zscore_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataFrame:
