@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import pandas as pd 
 import json
 
@@ -62,6 +62,46 @@ def get_tweets_by_day(cand_df: pd.DataFrame, cand_name: str) -> pd.DataFrame:
         day_info[f"day{i+1}"] = (cand_df["date"].dt.day == day).sum()
 
     return pd.DataFrame(day_info, index=[cand_name])
+
+def get_hashtags(df: pd.DataFrame) -> pd.DataFrame:
+    "Função para extrair hashtags de uma coluna com strings no formato: '['hashtag1', 'hashtag2']' "
+
+    all_hashtags = []
+    for i in range(len(df)):
+        raw = df["hashtags"].iloc[i][1:-1]
+        if len(raw)  == 0: continue
+        hashtags = [tag_to_clean.strip()[1:-1] for tag_to_clean in raw.split(",")]
+        
+        all_hashtags.extend(hashtags)
+
+    hashtags_df = pd.DataFrame(all_hashtags, columns=["hashtag"])
+    return hashtags_df
+
+
+def get_unique_hashtags(candidates: List[pd.DataFrame]) -> pd.DataFrame:
+
+    hashtags_df = pd.DataFrame(columns=["hashtag"])
+    for candidate in candidates:
+        hashtags_df = hashtags_df.append(get_hashtags(candidate), ignore_index=True)
+
+    hashtag_count = {}
+
+    for hashtag in hashtags_df["hashtag"].unique().tolist():
+        hashtag_count[hashtag] = (hashtags_df["hashtag"] == hashtag).sum()
+
+    unique_hashtags_df = pd.DataFrame(hashtag_count.values(), index=hashtag_count.keys(), columns=["quantidade"])
+
+    return unique_hashtags_df
+
+def get_fica_fora_quantities(unique_hashtags_df: pd.DataFrame, alias: Dict[str, str]) -> pd.DataFrame:
+    # Alias serão usados para construir as consultas do número de hashtags fica# e fora#
+    fica_fora_df = pd.DataFrame(index=alias.keys(), columns=["fica", "fora"])
+
+    for candidate in alias.keys():
+        fica_fora_df.loc[candidate]["fica"] = unique_hashtags_df.loc[f"#fica{alias[candidate]}"]["quantidade"]
+        fica_fora_df.loc[candidate]["fora"] = unique_hashtags_df.loc[f"#fora{alias[candidate]}"]["quantidade"]
+    
+    return fica_fora_df
 
 
 if __name__ == "__main__":
