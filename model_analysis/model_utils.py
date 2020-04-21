@@ -1,15 +1,16 @@
-from argparse import ArgumentParser
-from typing import List, Tuple, Dict
-from sklearn.model_selection import KFold, GridSearchCV
-import pandas as pd 
-import numpy as np 
-import os
-
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.linear_model import LinearRegression
-
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
+from sklearn.svm import SVR
+from typing import List, Dict, Tuple
+import pandas as pd
+import os
+import numpy as np
 
 PATH_TO_DATA = "../analysis/data/"
+
+REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
 COLUMNS = ["paredao", "nome", 
            "positivos", "neutros","negativos", 
            "positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct",
@@ -18,24 +19,18 @@ COLUMNS = ["paredao", "nome",
            "likes", "retweets", "seguidores",
            "fica", "fora",
            "rejeicao"]
-
 MODELS = {
-    "linear_regression": LinearRegression()
+    "linear_regression": LinearRegression(),
+    "svm": SVR(C=0.7, kernel="linear"),
+    "ada_boost": AdaBoostRegressor(n_estimators=100, learning_rate=1, loss="linear"),
+    "random_forest": RandomForestRegressor(n_estimators=100),
+    "knn": KNeighborsRegressor(n_neighbors=5, metric="minkowski")
 }
-
 METRICS = {
     "mse": mean_squared_error,
-    "mae": mean_absolute_error
+    "mae": mean_absolute_error,
+    "r2": r2_score
 }
-
-REMOVE = []
-
-parser = ArgumentParser()
-
-parser.add_argument("--model", required=True, type=str)
-parser.add_argument("--folds", required=True, type=int)
-
-parser.add_argument("--normalize", action="store_true")
 
 def zscore_normalize(df: pd.DataFrame) -> pd.DataFrame:
     
@@ -59,7 +54,7 @@ def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def get_train_test(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFrame:
+def get_data(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFrame:
 
     paredoes = os.listdir(PATH_TO_DATA)
     data_df = pd.DataFrame(columns=COLUMNS)
@@ -88,33 +83,3 @@ def evaluate(model, validation_data: Tuple[np.array, np.array]) -> Dict[str, Lis
         _metrics[metric] = val_metric
 
     return _metrics
-
-
-def run_kfold(model, folds: int, normalize: bool) -> None:
-    data_df = get_train_test(drop_columns=REMOVE, normalize=normalize)
-    x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
-    _metrics = {metric: [] for metric in METRICS.keys()}
-
-    skf = KFold(n_splits=folds, shuffle=True)
-
-    for train_index, test_index in skf.split(x, y):
-            X_train, X_test = x[train_index], x[test_index]
-            y_train, y_test = y[train_index], y[test_index]
-
-            model.fit(X_train, y_train)
-            current_metrics = evaluate(model, (X_test, y_test))
-
-            for metric in current_metrics.keys():
-                _metrics[metric].append(current_metrics[metric])
-    
-    print(_metrics)
-
-
-if __name__ == "__main__":
-    args = parser.parse_args()
-
-    model = MODELS[args.model]
-    folds = args.folds
-    normalize = args.normalize
-
-    run_kfold(model, folds, normalize)
