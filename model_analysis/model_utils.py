@@ -21,10 +21,10 @@ COLUMNS = ["paredao", "nome",
            "rejeicao"]
 MODELS = {
     "linear_regression": LinearRegression(),
-    "svm": SVR(C=0.7, kernel="linear"),
-    "ada_boost": AdaBoostRegressor(n_estimators=100, learning_rate=1, loss="linear"),
-    "random_forest": RandomForestRegressor(n_estimators=100),
-    "knn": KNeighborsRegressor(n_neighbors=5, metric="minkowski")
+    "svm": SVR(C=0.55, epsilon=0.65, kernel="sigmoid"),
+    "ada_boost": AdaBoostRegressor(n_estimators=200, learning_rate=0.55, loss="linear"),
+    "random_forest": RandomForestRegressor(n_estimators=1000),
+    "knn": KNeighborsRegressor(n_neighbors=3, metric="minkowski", p=1)
 }
 METRICS = {
     "mse": mean_squared_error,
@@ -73,7 +73,7 @@ def get_data(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFra
 
     return data_df
 
-def evaluate(model, validation_data: Tuple[np.array, np.array]) -> Dict[str, List[float]]:
+def evaluate(model, validation_data: Tuple[np.array, np.array]) -> Dict[str, float]:
     _metrics = {metric: 0 for metric in METRICS.keys()}
 
     for metric in METRICS.keys():
