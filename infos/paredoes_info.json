@@ -198,5 +198,22 @@
                 "porcentagem": 1.06
             }
         ]
+    },
+    "paredao13": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "flayslene",
+                "porcentagem": 63.0
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 36.53
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 0.47
+            }
+        ]
     }
 }

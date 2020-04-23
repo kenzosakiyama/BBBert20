@@ -20,12 +20,21 @@ COLUMNS = ["paredao", "nome",
            "fica", "fora",
            "rejeicao"]
 MODELS = {
-    "linear_regression": LinearRegression(),
+    "linear_regression": LinearRegression(normalize=False),
     "svm": SVR(C=0.55, epsilon=0.65, kernel="sigmoid"),
     "ada_boost": AdaBoostRegressor(n_estimators=200, learning_rate=0.55, loss="linear"),
     "random_forest": RandomForestRegressor(n_estimators=1000),
     "knn": KNeighborsRegressor(n_neighbors=3, metric="minkowski", p=1)
 }
+
+PARAMETERS = {
+    "linear_regression": {"normalize": False},
+    "svm": {"C": 0.55, "epsilon": 0.65, "kernel": "sigmoid"},
+    "ada_boost": {"n_estimators": 200, "learning_rate": 0.55, "loss": "linear"},
+    "random_forest": {"n_estimators": 1000},
+    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1}
+}
+
 METRICS = {
     "mse": mean_squared_error,
     "mae": mean_absolute_error,

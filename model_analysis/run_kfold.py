@@ -14,16 +14,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
 from sklearn.svm import SVR
 
-
-MODELS = {
-    "linear_regression": LinearRegression(),
-    "svm": SVR(C=0.7, kernel="linear"),
-    "ada_boost": AdaBoostRegressor(n_estimators=100, learning_rate=1, loss="linear"),
-    "random_forest": RandomForestRegressor(n_estimators=100),
-    "knn": KNeighborsRegressor(n_neighbors=5, metric="minkowski")
-}
-
-
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
