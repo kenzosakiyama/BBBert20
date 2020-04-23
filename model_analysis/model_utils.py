@@ -11,6 +11,7 @@ import numpy as np
 PATH_TO_DATA = "../analysis/data/"
 
 REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
+
 COLUMNS = ["paredao", "nome", 
            "positivos", "neutros","negativos", 
            "positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct",
@@ -19,12 +20,13 @@ COLUMNS = ["paredao", "nome",
            "likes", "retweets", "seguidores",
            "fica", "fora",
            "rejeicao"]
+
 MODELS = {
-    "linear_regression": LinearRegression(normalize=False),
-    "svm": SVR(C=0.55, epsilon=0.65, kernel="sigmoid"),
-    "ada_boost": AdaBoostRegressor(n_estimators=200, learning_rate=0.55, loss="linear"),
-    "random_forest": RandomForestRegressor(n_estimators=1000),
-    "knn": KNeighborsRegressor(n_neighbors=3, metric="minkowski", p=1)
+    "linear_regression": LinearRegression,
+    "svm": SVR,
+    "ada_boost": AdaBoostRegressor,
+    "random_forest": RandomForestRegressor,
+    "knn": KNeighborsRegressor
 }
 
 PARAMETERS = {
@@ -33,6 +35,14 @@ PARAMETERS = {
     "ada_boost": {"n_estimators": 200, "learning_rate": 0.55, "loss": "linear"},
     "random_forest": {"n_estimators": 1000},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1}
+}
+
+NORMALIZE = {
+    "linear_regression": True,
+    "svm": True,
+    "ada_boost": False,
+    "random_forest": False,
+    "knn": True
 }
 
 METRICS = {

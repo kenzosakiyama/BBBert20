@@ -38,7 +38,10 @@ def write_results(results: Dict[str, List[float]]) -> None:
 
 def run_kfold(model_name: str, folds: int, normalize: bool) -> None:
 
-    model = MODELS[model_name]
+    params = PARAMETERS[model_name]
+    regressor_model = MODELS[model_name]
+
+    model = regressor_model(**params)
 
     data_df = get_data(drop_columns=REMOVE, normalize=normalize)
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
