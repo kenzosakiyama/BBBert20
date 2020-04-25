@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser = build_parser()
     args = parser.parse_args()
 
-    model = MODELS[args.model]
+    model = MODELS[args.model]()
     normalize = args.normalize
     folds = args.folds
     jobs = args.n_jobs

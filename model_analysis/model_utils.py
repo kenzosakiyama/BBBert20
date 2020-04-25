@@ -1,5 +1,5 @@
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Lasso, ElasticNet, Ridge
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
 from sklearn.svm import SVR
@@ -26,7 +26,10 @@ MODELS = {
     "svm": SVR,
     "ada_boost": AdaBoostRegressor,
     "random_forest": RandomForestRegressor,
-    "knn": KNeighborsRegressor
+    "knn": KNeighborsRegressor,
+    "lasso": Lasso,
+    "ridge": Ridge,
+    "elastic_net": ElasticNet
 }
 
 PARAMETERS = {
@@ -34,7 +37,10 @@ PARAMETERS = {
     "svm": {"C": 0.55, "epsilon": 0.65, "kernel": "sigmoid"},
     "ada_boost": {"n_estimators": 200, "learning_rate": 0.55, "loss": "linear"},
     "random_forest": {"n_estimators": 1000},
-    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1}
+    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
+    "lasso": {"alpha": 0.1},
+    "ridge": {"alpha": 10},
+    "elastic_net": {"alpha": 0.4, "l1_ratio": 0}
 }
 
 NORMALIZE = {
@@ -42,7 +48,10 @@ NORMALIZE = {
     "svm": True,
     "ada_boost": False,
     "random_forest": False,
-    "knn": True
+    "knn": True,
+    "lasso": True,
+    "ridge": True,
+    "elastic_net": True
 }
 
 METRICS = {
