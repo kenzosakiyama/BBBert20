@@ -39,11 +39,11 @@ MODELS = {
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svm": {"C": 0.95, "epsilon": 0.35, "kernel": "rbf"},
-    "ada_boost": {"n_estimators": 100, "learning_rate": 0.85, "loss": "exponential"},
-    "random_forest": {"n_estimators": 1000},
+    "ada_boost": {"n_estimators": 200, "learning_rate": 0.45, "loss": "exponential"},
+    "random_forest": {"n_estimators": 500},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.1},
-    "ridge": {"alpha": 10},
+    "ridge": {"alpha": 13},
     "elastic_net": {"alpha": 0.4, "l1_ratio": 0}
 }
 
