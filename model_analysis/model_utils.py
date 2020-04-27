@@ -10,6 +10,9 @@ import numpy as np
 
 PATH_TO_DATA = "../analysis/data/"
 
+# Remove all sentiment analysis infos
+# REMOVE = ["positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct","positivos_global_pct", "neutros_global_pct", "negativos_global_pct","positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
+
 REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
 
 COLUMNS = ["paredao", "nome", 
