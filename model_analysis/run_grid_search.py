@@ -9,7 +9,7 @@ import os
 from model_utils import *
 from tqdm import tqdm
 from sklearn.metrics import make_scorer
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, SGDRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
 from sklearn.svm import SVR

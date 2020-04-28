@@ -215,5 +215,39 @@
                 "porcentagem": 0.47
             }
         ]
+    },
+    "paredao14": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "gizelly_bicalho",
+                "porcentagem": 54.79
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 41.33
+            },
+            {
+                "nome": "mari",
+                "porcentagem": 3.88
+            }
+        ]
+    },
+    "paredao15": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "babu",
+                "porcentagem": 57.15
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 31.41
+            },
+            {
+                "nome": "rafa",
+                "porcentagem": 11.44
+            }
+        ]
     }
 }

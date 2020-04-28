@@ -1,5 +1,5 @@
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.linear_model import LinearRegression, Lasso, ElasticNet, Ridge
+from sklearn.linear_model import LinearRegression, Lasso, ElasticNet, Ridge, SGDRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor, VotingRegressor
 from sklearn.svm import SVR
@@ -33,18 +33,20 @@ MODELS = {
     "lasso": Lasso,
     "ridge": Ridge,
     "elastic_net": ElasticNet,
+    "sgd": SGDRegressor,
     "ensamble1": VotingRegressor
 }
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {"C": 0.95, "epsilon": 0.35, "kernel": "rbf"},
-    "ada_boost": {"n_estimators": 200, "learning_rate": 0.45, "loss": "exponential"},
-    "random_forest": {"n_estimators": 500},
+    "svm": {"C": 0.95, "epsilon": 0.4, "kernel": "rbf"},
+    "ada_boost": {'learning_rate': 0.6, 'loss': 'linear', 'n_estimators': 100},
+    "random_forest": {"n_estimators": 100},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
-    "lasso": {"alpha": 0.1},
+    "lasso": {"alpha": 0.05},
     "ridge": {"alpha": 13},
-    "elastic_net": {"alpha": 0.4, "l1_ratio": 0}
+    "elastic_net": {"alpha": 0.3, "l1_ratio": 0.05},
+    "sgd":{'alpha': 1, 'epsilon': 0.05, 'l1_ratio': 0.5, 'learning_rate': 'optimal', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble1"] = {"estimators": [("svm", SVR(**PARAMETERS["svm"])), ("lr", LinearRegression()), ("elastic", ElasticNet(**PARAMETERS["elastic_net"]))]}
@@ -58,6 +60,7 @@ NORMALIZE = {
     "lasso": True,
     "ridge": True,
     "elastic_net": True,
+    "sgd": True,
     "ensamble1": True
 }
 
