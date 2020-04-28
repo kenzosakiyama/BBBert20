@@ -250,23 +250,6 @@
             }
         ]
     },
-    "paredao16": {
-        "quantidade_de_votos": 0,
-        "candidatos": [
-            {
-                "nome": "mari",
-                "porcentagem": 54.16
-            },
-            {
-                "nome": "manu_gavassi",
-                "porcentagem": 41.26
-            },
-            {
-                "nome": "babu",
-                "porcentagem": 4.58
-            }
-        ]
-    },
     "paredao17": {
         "quantidade_de_votos": 0,
         "candidatos": [
@@ -285,3 +268,20 @@
         ]
     }
 }
+    "paredao17": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "babu",
+                "porcentagem": 57.15
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 31.41
+            },
+            {
+                "nome": "rafa",
+                "porcentagem": 11.44
+            }
+        ]
+    }
