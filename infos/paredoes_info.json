@@ -237,6 +237,23 @@
         "quantidade_de_votos": 0,
         "candidatos": [
             {
+                "nome": "ivy",
+                "porcentagem": 74.17
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 19.52
+            },
+            {
+                "nome": "rafa",
+                "porcentagem": 6.31
+            }
+        ]
+    },
+    "paredao16": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
                 "nome": "babu",
                 "porcentagem": 57.15
             },
