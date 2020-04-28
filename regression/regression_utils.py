@@ -10,6 +10,7 @@ COLUMNS = ["paredao", "nome",
            "positivos_global_pct", "neutros_global_pct", "negativos_global_pct",
            "day1", "day2", "day3",
            "likes", "retweets", "seguidores",
+           "fica", "fora",
            "rejeicao"]
 
 def zscore_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataFrame:
@@ -34,14 +35,14 @@ def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def get_train_test(test_paredao: int, normalize: bool = True, classification: bool = False, drop_columns: List[str] = []) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_train_test(test_paredao: int, normalize: bool = True, classification: bool = False, drop_columns: List[str] = [], data_path: str = PATH_TO_DATA) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
-    paredoes = os.listdir(PATH_TO_DATA)
+    paredoes = os.listdir(data_path)
     data_df = pd.DataFrame(columns=COLUMNS)
 
     for paredao in paredoes:
-        if not os.path.exists(os.path.join(PATH_TO_DATA, paredao, "paredao_atributes.csv")): continue
-        current = pd.read_csv(os.path.join(PATH_TO_DATA, paredao, "paredao_atributes.csv"))
+        if not os.path.exists(os.path.join(data_path, paredao, "paredao_atributes.csv")): continue
+        current = pd.read_csv(os.path.join(data_path, paredao, "paredao_atributes.csv"))
 
         if classification:
             index = current["rejeicao"].idxmax()
