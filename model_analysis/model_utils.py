@@ -49,7 +49,14 @@ PARAMETERS = {
     "sgd":{'alpha': 1, 'epsilon': 0.2, 'l1_ratio': 0.35, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
 }
 
-PARAMETERS["ensamble1"] = {"estimators": [("svm", SVR(**PARAMETERS["svm"])), ("lr", LinearRegression()), ("elastic", ElasticNet(**PARAMETERS["elastic_net"]))]}
+PARAMETERS["ensamble1"] = {
+    "estimators": [
+        ("svm", SVR(**PARAMETERS["svm"])), 
+        ("lr", LinearRegression()), 
+        ("elastic", ElasticNet(**PARAMETERS["elastic_net"])),
+        ("sgd", SGDRegressor(**PARAMETERS["sgd"]))
+    ]
+}
 
 NORMALIZE = {
     "linear_regression": True,
