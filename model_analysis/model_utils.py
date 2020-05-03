@@ -1,7 +1,7 @@
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.linear_model import LinearRegression, Lasso, ElasticNet, Ridge, SGDRegressor
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor, VotingRegressor
+from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor, VotingRegressor, BaggingRegressor
 from sklearn.svm import SVR
 from typing import List, Dict, Tuple
 import pandas as pd
@@ -34,19 +34,20 @@ MODELS = {
     "ridge": Ridge,
     "elastic_net": ElasticNet,
     "sgd": SGDRegressor,
-    "ensamble1": VotingRegressor
+    "ensamble1": VotingRegressor,
+    "ensamble2": BaggingRegressor
 }
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {"C": 0.95, "epsilon": 0.4, "kernel": "rbf"},
-    "ada_boost": {'learning_rate': 0.75, 'loss': 'linear', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 200},
-    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 2},
+    "svm": {'C': 0.95, 'epsilon': 0.15, 'kernel': 'rbf'},
+    "ada_boost": {'learning_rate': 0.6, 'loss': 'exponential', 'n_estimators': 200},
+    "random_forest": {"n_estimators": 100},
+    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.1},
-    "ridge": {"alpha": 15},
-    "elastic_net": {"alpha": 0.4, "l1_ratio": 0.0},
-    "sgd":{'alpha': 1, 'epsilon': 0.2, 'l1_ratio': 0.35, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
+    "ridge": {"alpha": 17},
+    "elastic_net": {"alpha": 0.5, "l1_ratio": 0.0},
+    "sgd": {'alpha': 1, 'epsilon': 0.15, 'l1_ratio': 0.3, 'learning_rate': 'optimal', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble1"] = {
@@ -56,6 +57,10 @@ PARAMETERS["ensamble1"] = {
         ("elastic", ElasticNet(**PARAMETERS["elastic_net"])),
         ("sgd", SGDRegressor(**PARAMETERS["sgd"]))
     ]
+}
+
+PARAMETERS["ensamble2"] = {
+    "base_estimator": SVR(**PARAMETERS["svm"])
 }
 
 NORMALIZE = {
@@ -68,7 +73,8 @@ NORMALIZE = {
     "ridge": True,
     "elastic_net": True,
     "sgd": True,
-    "ensamble1": True
+    "ensamble1": True,
+    "ensamble2": True
 }
 
 METRICS = {
