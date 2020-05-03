@@ -60,7 +60,8 @@ PARAMETERS["ensamble1"] = {
 }
 
 PARAMETERS["ensamble2"] = {
-    "base_estimator": SVR(**PARAMETERS["svm"])
+    "base_estimator": SVR(**PARAMETERS["svm"]),
+    "n_estimators": 5
 }
 
 NORMALIZE = {
