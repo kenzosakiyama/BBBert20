@@ -41,13 +41,13 @@ MODELS = {
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svm": {'C': 0.95, 'epsilon': 0.15, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.6, 'loss': 'exponential', 'n_estimators': 200},
+    "ada_boost": {'learning_rate': 0.9, 'loss': 'linear', 'n_estimators': 100},
     "random_forest": {"n_estimators": 100},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.1},
     "ridge": {"alpha": 17},
     "elastic_net": {"alpha": 0.5, "l1_ratio": 0.0},
-    "sgd": {'alpha': 1, 'epsilon': 0.15, 'l1_ratio': 0.3, 'learning_rate': 'optimal', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
+    "sgd": {'alpha': 1, 'epsilon': 0.1, 'l1_ratio': 0.75, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble1"] = {
