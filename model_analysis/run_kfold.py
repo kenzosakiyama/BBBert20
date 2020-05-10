@@ -20,7 +20,6 @@ def build_parser() -> ArgumentParser:
     parser.add_argument("--model", required=True, type=str)
 
     parser.add_argument("--folds", type=int, default=10)
-    parser.add_argument("--normalize", action="store_true")
 
     return parser
 
@@ -36,14 +35,16 @@ def write_results(results: Dict[str, List[float]]) -> None:
     with open("kfold_results.json", "w") as fout:
         json.dump(current_results, fout, indent=2)
 
-def run_kfold(model_name: str, folds: int, normalize: bool) -> None:
+def run_kfold(model_name: str, folds: int) -> None:
 
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
+    norm = NORMALIZE[model_name]
+    print(norm)
 
     model = regressor_model(**params)
 
-    data_df = get_data(drop_columns=REMOVE, normalize=normalize)
+    data_df = get_data(drop_columns=REMOVE, normalize=norm)
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
     y = np.ravel(y)
     _metrics = {metric: [] for metric in METRICS.keys()}
@@ -78,6 +79,5 @@ if __name__ == "__main__":
 
     model = args.model
     folds = args.folds
-    normalize = args.normalize
 
-    run_kfold(model, folds, normalize)
+    run_kfold(model, folds)
