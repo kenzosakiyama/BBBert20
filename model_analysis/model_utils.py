@@ -13,7 +13,7 @@ PATH_TO_DATA = "../analysis/data/"
 # Remove all sentiment analysis infos
 # REMOVE = ["positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct","positivos_global_pct", "neutros_global_pct", "negativos_global_pct","positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
 
-REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
+REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day1", "day2"]
 
 COLUMNS = ["paredao", "nome", 
            "positivos", "neutros","negativos", 
@@ -40,14 +40,14 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {'C': 0.95, 'epsilon': 0.15, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.9, 'loss': 'linear', 'n_estimators': 100},
+    "svm": {'C': 0.95, 'epsilon': 0.2, 'kernel': 'rbf'},
+    "ada_boost": {'learning_rate': 0.8, 'loss': 'square', 'n_estimators': 100},
     "random_forest": {"n_estimators": 100},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.1},
     "ridge": {"alpha": 17},
-    "elastic_net": {"alpha": 0.5, "l1_ratio": 0.0},
-    "sgd": {'alpha': 1, 'epsilon': 0.1, 'l1_ratio': 0.75, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
+    "elastic_net": {"alpha": 0.4, "l1_ratio": 0.0},
+    "sgd": {'alpha': 1, 'epsilon': 0.05, 'l1_ratio': 0.7, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble1"] = {
