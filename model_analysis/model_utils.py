@@ -41,7 +41,7 @@ MODELS = {
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svm": {'C': 0.95, 'epsilon': 0.2, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.8, 'loss': 'square', 'n_estimators': 100},
+    "ada_boost": {'learning_rate': 0.6, 'loss': 'exponential', 'n_estimators': 100},
     "random_forest": {"n_estimators": 100},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.1},
