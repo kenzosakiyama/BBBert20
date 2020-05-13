@@ -31,8 +31,8 @@ def average(executions: List) -> Dict:
         values = metrics[metric]
         mean = np.mean(values[:, 0])
         std = np.mean(values[:, 1])
-        infos[metric + "_mean"] = mean
-        infos[metric + "_std"] = std
+        infos[metric + "_mean"] = np.around(mean, 3)
+        infos[metric + "_std"] = np.around(std, 3)
 
     infos["repetitions"] = n_executions
 
