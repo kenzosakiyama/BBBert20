@@ -40,6 +40,7 @@ def run_kfold(model_name: str, folds: int) -> None:
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
+    # norm = False
 
     model = regressor_model(**params)
 

@@ -40,14 +40,14 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {'C': 0.95, 'epsilon': 0.2, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.6, 'loss': 'exponential', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 100},
+    "svm": {'C': 0.9, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
+    "ada_boost": {'learning_rate': 0.85, 'loss': 'exponential', 'n_estimators': 100},
+    "random_forest": {"n_estimators": 200},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
-    "lasso": {"alpha": 0.1},
-    "ridge": {"alpha": 17},
-    "elastic_net": {"alpha": 0.4, "l1_ratio": 0.0},
-    "sgd": {'alpha': 1, 'epsilon': 0.05, 'l1_ratio': 0.7, 'learning_rate': 'constant', 'loss': 'squared_epsilon_insensitive', 'penalty': 'l2'}
+    "lasso": {"alpha": 0.01},
+    "ridge": {"alpha": 0.4},
+    "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
+    "sgd": {'alpha': 0.001, 'epsilon': 0.1, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'huber', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble1"] = {
@@ -84,20 +84,21 @@ METRICS = {
     "r2": r2_score
 }
 
-def zscore_normalize(df: pd.DataFrame) -> pd.DataFrame:
+def minmax_normalize(df: pd.DataFrame) -> pd.DataFrame:
     
-    y_mean, y_std = 0, 0
+    x, y = 0, 0
     
     for column in COLUMNS:
-        if column == "paredao" or column == "nome": continue
-        mean = df[column].mean()
-        std = df[column].std()
+        if column == "paredao" or column == "nome" or "_pct" in column: continue
+        # print(column)
+        min_value = df[column].min()
+        max_value = df[column].max()
 
-        if column == "rejeicao": y_mean, y_std = mean, std
+        if column == "rejeicao": x, y = min_value, (max_value - min_value)
 
-        df[column] = (df[column] - mean) / std
+        df[column] = (df[column] - min_value) / (max_value - min_value)
     
-    return df, y_mean, y_std
+    return df, x, y
 
 def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
@@ -120,7 +121,7 @@ def get_data(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFra
         data_df = data_df.append(current, ignore_index=True, sort=False)
 
     data_df = fix_types(data_df)
-    if normalize: data_df, mean, std = zscore_normalize(data_df)
+    if normalize: data_df, _, _ = minmax_normalize(data_df)
     if len(drop_columns) > 0: data_df.drop(columns=drop_columns, inplace=True)
 
     return data_df

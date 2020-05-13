@@ -13,20 +13,21 @@ COLUMNS = ["paredao", "nome",
            "fica", "fora",
            "rejeicao"]
 
-def zscore_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataFrame:
+def minmax_normalize(df: pd.DataFrame, classification: bool = False) -> pd.DataFrame:
     
-    y_mean, y_std = 0, 0
+    x, y = 0, 0
     
     for column in COLUMNS:
-        if column == "paredao" or column == "nome" or (column == "rejeicao" and classification) : continue
-        mean = df[column].mean()
-        std = df[column].std()
+        if column == "paredao" or column == "nome" or "_pct" in column or (column == "rejeicao" and classification): continue
+        # print(column)
+        min_value = df[column].min()
+        max_value = df[column].max()
 
-        if column == "rejeicao": y_mean, y_std = mean, std
+        if column == "rejeicao": x, y = min_value, (max_value - min_value)
 
-        df[column] = (df[column] - mean) / std
+        df[column] = (df[column] - min_value) / (max_value - min_value)
     
-    return df, y_mean, y_std
+    return df, x, y
 
 def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
@@ -55,7 +56,7 @@ def get_train_test(test_paredao: int, normalize: bool = True, classification: bo
         data_df = data_df.append(current, ignore_index=True, sort=False)
 
     data_df = fix_types(data_df)
-    if normalize: data_df, mean, std = zscore_normalize(data_df, classification=classification)
+    if normalize: data_df, mean, std = minmax_normalize(data_df, classification=classification)
     if len(drop_columns) > 0: data_df.drop(columns=drop_columns, inplace=True)
 
     test_df = data_df[data_df["paredao"] == test_paredao]

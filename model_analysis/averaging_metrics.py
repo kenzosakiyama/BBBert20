@@ -1,5 +1,6 @@
 import numpy as np 
 import json
+import pandas as pd 
 from typing import List, Dict
 
 METRICS = [
@@ -15,16 +16,12 @@ def load_json() -> List[Dict]:
     
     return metrics
 
-def average(executions: List) -> None:
+def average(executions: List) -> Dict:
     model_name = executions[0]["model"]
     n_executions = len(executions)
     metrics = {name: np.zeros((n_executions, 2)) for name in METRICS}
-    # mse = np.zeros((n_executions, 2))
-    # mae = np.zeros((n_executions, 2))
-    # r2 = np.zeros((n_executions, 2))
-    # print(executions)
-    # print(len(executions))
-    # print()
+
+    infos = {"model": model_name}
     for i, execution in enumerate(executions):
         for metric in METRICS:
             metrics[metric][i] = execution[metric]
@@ -32,13 +29,19 @@ def average(executions: List) -> None:
     print(f"- Model: {model_name}, with {n_executions}")
     for metric in METRICS:
         values = metrics[metric]
-        print(f"\t metric: {metric} -> {np.mean(values[:, 0])} +/- {np.mean(values[:, 1])}")
-    # print(metrics["mse"].shape)
-    # print(metrics["mae"].shape)
-    # print(metrics["r2"].shape)
-    print()
+        mean = np.mean(values[:, 0])
+        std = np.mean(values[:, 1])
+        infos[metric + "_mean"] = mean
+        infos[metric + "_std"] = std
+
+    infos["repetitions"] = n_executions
+
+    return infos
 
 def iterate(metrics: List) -> None:
+
+    columns = ['model', 'mse_mean', 'mse_std', 'mae_mean', 'mae_std', 'r2_mean', 'r2_std', 'repetitions']
+    metrics_df = pd.DataFrame(columns=columns)
 
     current_execution = [metrics[0]]
     current_model = metrics[0]["model"]
@@ -46,7 +49,7 @@ def iterate(metrics: List) -> None:
     for execution in metrics[1:]:
 
         if execution["model"] != current_model:
-            average(current_execution)
+            metrics_df = metrics_df.append(average(current_execution), ignore_index=True)
             current_execution = [execution]
             current_model = execution["model"]
         
@@ -54,7 +57,13 @@ def iterate(metrics: List) -> None:
             current_execution.append(execution)
 
     if len(current_execution) > 0:
-        average(current_execution)
+        metrics_df = metrics_df.append(average(current_execution), ignore_index=True)
+    
+    metrics_df.sort_values(by="mse_mean", inplace=True, ascending=False)
+    metrics_df.set_index("model", inplace=True)
+    
+    print(metrics_df)
+    metrics_df.to_csv("metrics.csv")
 
 if __name__ == "__main__":
     metrics = load_json()
