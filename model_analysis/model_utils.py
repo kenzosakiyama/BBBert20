@@ -53,9 +53,8 @@ PARAMETERS = {
 PARAMETERS["ensamble1"] = {
     "estimators": [
         ("svm", SVR(**PARAMETERS["svm"])), 
-        ("lr", LinearRegression()), 
-        ("elastic", ElasticNet(**PARAMETERS["elastic_net"])),
-        ("sgd", SGDRegressor(**PARAMETERS["sgd"]))
+        ("knn", KNeighborsRegressor(**PARAMETERS["knn"])),
+        ("ridge", Ridge(**PARAMETERS["ridge"]))
     ]
 }
 
