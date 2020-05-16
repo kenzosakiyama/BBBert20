@@ -10,10 +10,8 @@ import numpy as np
 
 PATH_TO_DATA = "../analysis/data/"
 
-# Remove all sentiment analysis infos
-# REMOVE = ["positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct","positivos_global_pct", "neutros_global_pct", "negativos_global_pct","positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
-
-REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day1", "day2"]
+# Preserve all atributes
+REMOVE = []
 
 COLUMNS = ["paredao", "nome", 
            "positivos", "neutros","negativos", 
@@ -40,14 +38,14 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {'C': 0.9, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.85, 'loss': 'exponential', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 200},
-    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
+    "svm": {'C': 0.95, 'degree': 4, 'epsilon': 0.1, 'kernel': 'rbf'},
+    "ada_boost": {'learning_rate': 0.15, 'loss': 'square', 'n_estimators': 100},
+    "random_forest": {"n_estimators": 100},
+    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 2},
     "lasso": {"alpha": 0.01},
-    "ridge": {"alpha": 0.4},
+    "ridge": {"alpha": 0.5},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.001, 'epsilon': 0.1, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'huber', 'penalty': 'l2'}
+    "sgd": {'alpha': 0.0001, 'epsilon': 0.15, 'l1_ratio': 0.85, 'learning_rate': 'adaptive', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
 }
 
 # Alias = Ensamble 3
