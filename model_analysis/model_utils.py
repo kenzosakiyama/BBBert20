@@ -32,7 +32,7 @@ MODELS = {
     "ridge": Ridge,
     "elastic_net": ElasticNet,
     "sgd": SGDRegressor,
-    "ensamble1": VotingRegressor,
+    "ensamble3": VotingRegressor,
     "ensamble2": BaggingRegressor
 }
 
@@ -71,7 +71,7 @@ NORMALIZE = {
     "ridge": True,
     "elastic_net": True,
     "sgd": True,
-    "ensamble1": True,
+    "ensamble3": True,
     "ensamble2": True
 }
 
