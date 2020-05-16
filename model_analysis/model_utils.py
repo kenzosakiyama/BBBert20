@@ -48,8 +48,7 @@ PARAMETERS = {
     "sgd": {'alpha': 0.0001, 'epsilon': 0.15, 'l1_ratio': 0.85, 'learning_rate': 'adaptive', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
 }
 
-# Alias = Ensamble 3
-PARAMETERS["ensamble1"] = {
+PARAMETERS["ensamble3"] = {
     "estimators": [
         ("svm", SVR(**PARAMETERS["svm"])), 
         ("knn", KNeighborsRegressor(**PARAMETERS["knn"])),
@@ -57,7 +56,6 @@ PARAMETERS["ensamble1"] = {
     ]
 }
 
-# Alias = Ensamble 2
 PARAMETERS["ensamble2"] = {
     "base_estimator": SVR(**PARAMETERS["svm"]),
     "n_estimators": 5
