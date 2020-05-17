@@ -34,7 +34,7 @@ MODELS = {
     "ridge": Ridge,
     "elastic_net": ElasticNet,
     "sgd": SGDRegressor,
-    "ensamble1": VotingRegressor,
+    "ensamble3": VotingRegressor,
     "ensamble2": BaggingRegressor
 }
 
@@ -50,8 +50,7 @@ PARAMETERS = {
     "sgd": {'alpha': 0.001, 'epsilon': 0.1, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'huber', 'penalty': 'l2'}
 }
 
-# Alias = Ensamble 3
-PARAMETERS["ensamble1"] = {
+PARAMETERS["ensamble3"] = {
     "estimators": [
         ("svm", SVR(**PARAMETERS["svm"])), 
         ("knn", KNeighborsRegressor(**PARAMETERS["knn"])),
@@ -59,7 +58,6 @@ PARAMETERS["ensamble1"] = {
     ]
 }
 
-# Alias = Ensamble 2
 PARAMETERS["ensamble2"] = {
     "base_estimator": SVR(**PARAMETERS["svm"]),
     "n_estimators": 5
@@ -75,7 +73,7 @@ NORMALIZE = {
     "ridge": True,
     "elastic_net": True,
     "sgd": True,
-    "ensamble1": True,
+    "ensamble3": True,
     "ensamble2": True
 }
 
