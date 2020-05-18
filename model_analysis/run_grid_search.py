@@ -45,7 +45,7 @@ def run_grid_search(model, name: str, parameters: Dict, folds: int, normalize: b
     scorers = setup_scorers()
     gs = GridSearchCV(model, param_grid=parameters, verbose=10, iid=False, cv=folds, refit='mse', scoring=scorers, n_jobs=n_jobs)
     gs.fit(x, y)
-
+    print(data_df.head())
     pd.DataFrame(gs.cv_results_).to_csv("grid_search_results/"  + name + "_grid_search_results.csv")
 
 if __name__ == "__main__":

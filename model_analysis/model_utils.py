@@ -13,7 +13,22 @@ PATH_TO_DATA = "../analysis/data/"
 # Remove all sentiment analysis infos
 # REMOVE = ["positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct","positivos_global_pct", "neutros_global_pct", "negativos_global_pct","positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
 
-REMOVE = ["positivos", "neutros", "negativos", "likes", "retweets", "day1", "day2"]
+KEEP = [
+    "positivos",
+    "positivos_individual_pct",
+    "neutros_individual_pct",
+    "negativos_global_pct",
+    "fora"
+]
+
+REMOVE = [
+    'positivos_global_pct', 'neutros_global_pct', 
+    'neutros', 'negativos',
+    'negativos_individual_pct',
+    'day3', 'day2', 'day1', 
+    'fica', 'likes', 'retweets',
+    'seguidores'
+]
 
 COLUMNS = ["paredao", "nome", 
            "positivos", "neutros","negativos", 
@@ -40,14 +55,14 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svr": {'C': 0.9, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
+    "svr": {'C': 0.95, 'degree': 2, 'epsilon': 0.2, 'kernel': 'poly'},
     "ada_boost": {'learning_rate': 0.85, 'loss': 'exponential', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 200},
-    "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
+    "random_forest": {"n_estimators": 100},
+    "knn": {"n_neighbors": 5, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.01},
     "ridge": {"alpha": 0.4},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.001, 'epsilon': 0.1, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'huber', 'penalty': 'l2'}
+    "sgd": {'alpha': 0.01, 'epsilon': 0.05, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
 }
 
 PARAMETERS["ensamble3"] = {
