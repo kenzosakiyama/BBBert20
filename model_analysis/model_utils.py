@@ -26,7 +26,7 @@ COLUMNS = ["paredao", "nome",
 
 MODELS = {
     "linear_regression": LinearRegression,
-    "svm": SVR,
+    "svr": SVR,
     "ada_boost": AdaBoostRegressor,
     "random_forest": RandomForestRegressor,
     "knn": KNeighborsRegressor,
@@ -40,7 +40,7 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svm": {'C': 0.9, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
+    "svr": {'C': 0.9, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
     "ada_boost": {'learning_rate': 0.85, 'loss': 'exponential', 'n_estimators': 100},
     "random_forest": {"n_estimators": 200},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 1},
@@ -52,20 +52,20 @@ PARAMETERS = {
 
 PARAMETERS["ensamble3"] = {
     "estimators": [
-        ("svm", SVR(**PARAMETERS["svm"])), 
+        ("svr", SVR(**PARAMETERS["svr"])), 
         ("knn", KNeighborsRegressor(**PARAMETERS["knn"])),
         ("ridge", Ridge(**PARAMETERS["ridge"]))
     ]
 }
 
 PARAMETERS["ensamble2"] = {
-    "base_estimator": SVR(**PARAMETERS["svm"]),
+    "base_estimator": SVR(**PARAMETERS["svr"]),
     "n_estimators": 5
 }
 
 NORMALIZE = {
     "linear_regression": True,
-    "svm": True,
+    "svr": True,
     "ada_boost": False,
     "random_forest": False,
     "knn": True,
