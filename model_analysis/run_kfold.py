@@ -40,11 +40,13 @@ def run_kfold(model_name: str, folds: int) -> None:
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
+    features = FEATURES[model]
     # norm = False
     
     model = regressor_model(**params)
 
-    data_df = get_data(drop_columns=REMOVE, normalize=norm)
+    # TODO: REFATORAR
+    data_df = get_data(features=features, normalize=norm)
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
     y = np.ravel(y)
     _metrics = {metric: [] for metric in METRICS.keys()}
