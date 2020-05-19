@@ -41,7 +41,7 @@ def run_kfold(model_name: str, folds: int) -> None:
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
     # norm = False
-
+    
     model = regressor_model(**params)
 
     data_df = get_data(drop_columns=REMOVE, normalize=norm)

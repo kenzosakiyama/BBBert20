@@ -15,19 +15,20 @@ PATH_TO_DATA = "../analysis/data/"
 
 KEEP = [
     "positivos",
-    "positivos_individual_pct",
     "neutros_individual_pct",
+    "negativos_individual_pct",
+    "positivos_global_pct",
     "negativos_global_pct",
+    "seguidores",
     "fora"
 ]
 
 REMOVE = [
-    'positivos_global_pct', 'neutros_global_pct', 
+    'positivos_global_pct',
+    'neutros_global_pct', 
     'neutros', 'negativos',
-    'negativos_individual_pct',
     'day3', 'day2', 'day1', 
-    'fica', 'likes', 'retweets',
-    'seguidores'
+    'fica', 'likes', 'retweets'
 ]
 
 COLUMNS = ["paredao", "nome", 
@@ -55,14 +56,14 @@ MODELS = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svr": {'C': 0.95, 'degree': 2, 'epsilon': 0.2, 'kernel': 'poly'},
-    "ada_boost": {'learning_rate': 0.85, 'loss': 'exponential', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 100},
+    "svr": {'C': 0.95, 'degree': 5, 'epsilon': 0.05, 'kernel': 'rbf'},
+    "ada_boost": {'learning_rate': 0.85, 'loss': 'linear', 'n_estimators': 100},
+    "random_forest": {"n_estimators": 1000, 'criterion': 'mae'},
     "knn": {"n_neighbors": 5, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.01},
-    "ridge": {"alpha": 0.4},
+    "ridge": {"alpha": 0.5},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.01, 'epsilon': 0.05, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
+    "sgd":{'alpha': 0.01, 'epsilon': 0.2, 'l1_ratio': 0.2, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
 }
 
 PARAMETERS["ensamble3"] = {
