@@ -7,18 +7,10 @@
     "likes",
     "retweets"
   ],
-  "svr": [
-    "neutros_global_pct",
-    "day2",
-    "seguidores",
-    "fora"
-  ],
   "ada_boost": [
     "positivos_individual_pct",
     "neutros_global_pct",
-    "negativos_global_pct",
     "day2",
-    "retweets",
     "seguidores",
     "fora"
   ],
@@ -61,6 +53,12 @@
     "fora"
   ],
   "knn": [
+    "neutros_global_pct",
+    "day2",
+    "seguidores",
+    "fora"
+  ],
+  "svr": [
     "neutros_global_pct",
     "day2",
     "seguidores",

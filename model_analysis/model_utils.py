@@ -13,14 +13,16 @@ PATH_TO_DATA = "../analysis/data/"
 # Remove all sentiment analysis infos
 # REMOVE = ["positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct","positivos_global_pct", "neutros_global_pct", "negativos_global_pct","positivos", "neutros", "negativos", "likes", "retweets", "day2", "day3"]
 
-COLUMNS = ["paredao", "nome", 
-           "positivos", "neutros","negativos", 
-           "positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct",
-           "positivos_global_pct", "neutros_global_pct", "negativos_global_pct",
-           "day1", "day2", "day3",
-           "likes", "retweets", "seguidores",
-           "fica", "fora",
-           "rejeicao"]
+COLUMNS = [
+    "positivos", "neutros","negativos", 
+    "positivos_individual_pct", "neutros_individual_pct", "negativos_individual_pct",
+    "positivos_global_pct", "neutros_global_pct", "negativos_global_pct",
+    "day1", "day2", "day3",
+    "likes", "retweets", "seguidores",
+    "fica", "fora",
+]
+
+DEFAULT_COLUMNS = ["paredao", "nome", "rejeicao"]
 
 MODELS = {
     "linear_regression": LinearRegression,
@@ -45,19 +47,19 @@ PARAMETERS_ALL_ATRIBUTES = {
     "lasso": {"alpha": 0.01},
     "ridge": {"alpha": 0.5},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.0001, 'epsilon': 0.15, 'l1_ratio': 0.85, 'learning_rate': 'adaptive', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
+    "sgd": {'alpha': 0.01, 'epsilon': 0.15, 'l1_ratio': 0.65, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svr": {'C': 0.8, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.95, 'loss': 'square', 'n_estimators': 200},
+    "ada_boost": {'learning_rate': 1.0, 'loss': 'square', 'n_estimators': 100},
     "random_forest": {"n_estimators": 500, 'criterion': 'mae'},
     "knn": {"n_neighbors": 7, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.01},
     "ridge": {"alpha": 0.3},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.01, 'epsilon': 0.15, 'l1_ratio': 0.65, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
+    "sgd": {'alpha': 0.0001, 'epsilon': 0.1, 'l1_ratio': 0.4, 'learning_rate': 'constant', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble3"] = {
@@ -93,13 +95,11 @@ METRICS = {
     "r2": r2_score
 }
 
-default_columns = ["paredao", "nome", "rejeicao"]
-
 def minmax_normalize(df: pd.DataFrame) -> pd.DataFrame:
     
     x, y = 0, 0
     
-    for column in COLUMNS:
+    for column in COLUMNS + DEFAULT_COLUMNS:
         if column == "paredao" or column == "nome" or "_pct" in column: continue
         # print(column)
         min_value = df[column].min()
@@ -114,16 +114,15 @@ def minmax_normalize(df: pd.DataFrame) -> pd.DataFrame:
 def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
     for column in df.columns[2:]:
+        if column in DEFAULT_COLUMNS: continue
         if df[column].dtype == "O": df[column] = df[column].astype(int)
 
     return df
 
-def get_train_test(test_paredao: int, normalize: bool = True, features: List[str] = COLUMNS, data_path: str = PATH_TO_DATA) -> Tuple[pd.DataFrame, pd.DataFrame]:
-
-    # features.extend(default_columns)
+def get_train_test(test_paredao: int, features: List[str], normalize: bool = True, data_path: str = PATH_TO_DATA) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     paredoes = os.listdir(data_path)
-    data_df = pd.DataFrame(columns=COLUMNS)
+    data_df = pd.DataFrame(columns=COLUMNS+DEFAULT_COLUMNS)
 
     for paredao in paredoes:
         if not os.path.exists(os.path.join(data_path, paredao, "paredao_atributes.csv")): continue
@@ -138,18 +137,17 @@ def get_train_test(test_paredao: int, normalize: bool = True, features: List[str
     if normalize: data_df, mean, std = minmax_normalize(data_df)
 
     # Feature selection
-    data_df = data_df[features + default_columns]
+    data_df = data_df[features + DEFAULT_COLUMNS]
 
     test_df = data_df[data_df["paredao"] == test_paredao]
     train_df = data_df.drop(index=test_df.index, axis=0)
 
     return (train_df, test_df) if not normalize else (train_df, test_df, mean, std)
 
-# TODO: REFATORAR PARA REMOVER O DROP_COLUMNS 
-def get_data(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFrame:
+def get_data(features: List[str], normalize: bool = True) -> pd.DataFrame:
 
     paredoes = os.listdir(PATH_TO_DATA)
-    data_df = pd.DataFrame(columns=COLUMNS)
+    data_df = pd.DataFrame(columns=COLUMNS+DEFAULT_COLUMNS)
 
     for paredao in paredoes:
         if not os.path.exists(os.path.join(PATH_TO_DATA, paredao, "paredao_atributes.csv")): continue
@@ -161,7 +159,7 @@ def get_data(normalize: bool = True, drop_columns: List[str] = []) -> pd.DataFra
 
     data_df = fix_types(data_df)
     if normalize: data_df, _, _ = minmax_normalize(data_df)
-    if len(drop_columns) > 0: data_df.drop(columns=drop_columns, inplace=True)
+    data_df = data_df[features + DEFAULT_COLUMNS]
 
     return data_df
 

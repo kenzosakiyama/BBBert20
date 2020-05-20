@@ -14,8 +14,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
 from sklearn.svm import SVR
 
-default_columns = ["paredao", "nome", "rejeicao"]
-
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
@@ -40,11 +38,8 @@ def setup_scorers() -> List:
     return scorers
 
 def run_grid_search(model, name: str, parameters: Dict, folds: int, normalize: bool, n_jobs: int, features: List[str]) -> None:
-    # Adding default columns
-    features.extend(default_columns)
-    data_df = get_data(normalize=normalize)
-    # FEature selection
-    data_df = data_df[features]
+    
+    data_df = get_data(features, normalize=normalize)
 
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
     y = np.ravel(y)
@@ -52,7 +47,7 @@ def run_grid_search(model, name: str, parameters: Dict, folds: int, normalize: b
     scorers = setup_scorers()
     gs = GridSearchCV(model, param_grid=parameters, verbose=10, iid=False, cv=folds, refit='mse', scoring=scorers, n_jobs=n_jobs)
     gs.fit(x, y)
-    print(data_df.head())
+    print(data_df.columns)
     pd.DataFrame(gs.cv_results_).to_csv("grid_search_results/"  + name + "_grid_search_results.csv")
 
 if __name__ == "__main__":

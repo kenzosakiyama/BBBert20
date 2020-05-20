@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from typing import List, Tuple, Dict
 from sklearn.model_selection import KFold, GridSearchCV
+from run_grid_search import load_json
 import pandas as pd 
 import numpy as np 
 import os
@@ -18,6 +19,7 @@ def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
     parser.add_argument("--model", required=True, type=str)
+    parser.add_argument("--features", required=True, type=str)
 
     parser.add_argument("--folds", type=int, default=10)
 
@@ -35,18 +37,23 @@ def write_results(results: Dict[str, List[float]]) -> None:
     with open("kfold_results.json", "w") as fout:
         json.dump(current_results, fout, indent=2)
 
-def run_kfold(model_name: str, folds: int) -> None:
+def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> None:
 
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
-    features = FEATURES[model]
+    features = features[model_name]
     # norm = False
     
     model = regressor_model(**params)
 
-    # TODO: REFATORAR
-    data_df = get_data(features=features, normalize=norm)
+    data_df = get_data(features, normalize=norm)
+    # Feature selection:
+    print(f"- Model {model_name}")
+    print(f"-- Features: {features}")
+    print(f"-- Parameters: {params}")
+    
+
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
     y = np.ravel(y)
     _metrics = {metric: [] for metric in METRICS.keys()}
@@ -66,6 +73,7 @@ def run_kfold(model_name: str, folds: int) -> None:
     # Averaging metrics
     for metric in _metrics.keys():
         _metrics[metric] = (np.mean(_metrics[metric]), np.std(_metrics[metric]))
+
     _metrics["folds"] = folds
     _metrics["model"] = model_name
     _metrics["time"] = str(datetime.now())
@@ -81,5 +89,6 @@ if __name__ == "__main__":
 
     model = args.model
     folds = args.folds
+    features = load_json(args.features)
 
-    run_kfold(model, folds)
+    run_kfold(model, features, folds)
