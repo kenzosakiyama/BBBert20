@@ -3,10 +3,13 @@ from sklearn.linear_model import LinearRegression, Lasso, ElasticNet, Ridge, SGD
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor, VotingRegressor, BaggingRegressor
 from sklearn.svm import SVR
+from sklearn.feature_selection import RFE
+from sklearn.model_selection import cross_val_predict
 from typing import List, Dict, Tuple
 import pandas as pd
 import os
 import numpy as np
+
 
 PATH_TO_DATA = "../analysis/data/"
 
@@ -173,3 +176,20 @@ def evaluate(model, validation_data: Tuple[np.array, np.array]) -> Dict[str, flo
         _metrics[metric] = val_metric
 
     return _metrics
+
+def get_minimum_features(regressor_model, x: np.array, y: np.array) -> int:
+  
+    best_score = 0
+    n_features = 0           
+
+    for n in range(1, len(COLUMNS)):
+        rfe = RFE(regressor_model, n)
+        X_train_rfe = rfe.fit_transform(x, y)
+        preds = cross_val_predict(regressor_model, X_train_rfe, y, cv=10, n_jobs=5)
+        score = r2_score(y, preds)
+
+        if(score > best_score):
+            best_score = score
+            n_features = n
+
+    return n_features

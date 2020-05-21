@@ -13,11 +13,14 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.feature_selection import RFE
 from sklearn.pipeline import Pipeline
 
+# Models not supported by RFE
+EXCEPTIONS = ["svr", "knn", "ensamble2", "ensamble3"]
+RF = "random_forest"
+
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
     parser.add_argument("--model", required=True, type=str)
-    parser.add_argument("--features", required=True, type=str)
 
     parser.add_argument("--folds", type=int, default=10)
 
@@ -35,15 +38,13 @@ def write_results(results: Dict[str, List[float]]) -> None:
     with open("kfold_results.json", "w") as fout:
         json.dump(current_results, fout, indent=2)
 
-def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> None:
+def run_kfold(model_name: str, folds: int) -> None:
 
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
-    # features = COLUMNS
-    features = features[model_name] 
+    features = COLUMNS
     # norm = False
-    
 
     data_df = get_data(features, normalize=norm)
     # Feature selection:
@@ -62,13 +63,19 @@ def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> No
             X_train, X_test = x[train_index], x[test_index]
             y_train, y_test = y[train_index], y[test_index]
 
-            # model = Pipeline(
-            #     [
-            #         RFE()
-            #     ]
-            # )
+            model = regressor_model(**params) if model_name not in EXCEPTIONS else MODELS[RF](**PARAMETERS[RF])
+            minimum_features = get_minimum_features(model, X_train, y_train)
+            rfe_model = regressor_model(**params) if model_name not in EXCEPTIONS else MODELS[RF](**PARAMETERS[RF])
+            print(minimum_features)
+            print(model_name)
 
-            model = regressor_model(**params)
+            model = Pipeline(
+                [
+                    ("rfe", RFE(rfe_model, minimum_features)),
+                    ("reg", regressor_model(**params))
+                ]
+            )
+
             model.fit(X_train, y_train)
             current_metrics = evaluate(model, (X_test, y_test))
 
@@ -94,6 +101,5 @@ if __name__ == "__main__":
 
     model = args.model
     folds = args.folds
-    features = load_json(args.features)
 
-    run_kfold(model, features, folds)
+    run_kfold(model, folds)
