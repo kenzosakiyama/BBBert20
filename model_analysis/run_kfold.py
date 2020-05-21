@@ -10,10 +10,8 @@ import json
 from model_utils import *
 from datetime import datetime
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.linear_model import LinearRegression
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
-from sklearn.svm import SVR
+from sklearn.feature_selection import RFE
+from sklearn.pipeline import Pipeline
 
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
@@ -42,10 +40,10 @@ def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> No
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
-    features = features[model_name]
+    # features = COLUMNS
+    features = features[model_name] 
     # norm = False
     
-    model = regressor_model(**params)
 
     data_df = get_data(features, normalize=norm)
     # Feature selection:
@@ -64,6 +62,13 @@ def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> No
             X_train, X_test = x[train_index], x[test_index]
             y_train, y_test = y[train_index], y[test_index]
 
+            # model = Pipeline(
+            #     [
+            #         RFE()
+            #     ]
+            # )
+
+            model = regressor_model(**params)
             model.fit(X_train, y_train)
             current_metrics = evaluate(model, (X_test, y_test))
 
