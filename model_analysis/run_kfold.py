@@ -42,7 +42,6 @@ def run_kfold(model_name: str, folds: int) -> None:
     norm = NORMALIZE[model_name]
     # norm = False
 
-    model = regressor_model(**params)
     data_df = get_data(drop_columns=REMOVE, normalize=norm)
 
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
@@ -55,6 +54,7 @@ def run_kfold(model_name: str, folds: int) -> None:
             X_train, X_test = x[train_index], x[test_index]
             y_train, y_test = y[train_index], y[test_index]
 
+            model = regressor_model(**params)
             model.fit(X_train, y_train)
             current_metrics = evaluate(model, (X_test, y_test))
 
