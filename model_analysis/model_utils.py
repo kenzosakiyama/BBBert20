@@ -116,7 +116,7 @@ def minmax_normalize(df: pd.DataFrame) -> pd.DataFrame:
 
 def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
-    for column in df.columns[2:]:
+    for column in df.columns:
         if column in DEFAULT_COLUMNS: continue
         if df[column].dtype == "O": df[column] = df[column].astype(int)
 
