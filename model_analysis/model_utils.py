@@ -56,13 +56,13 @@ PARAMETERS_ALL_ATRIBUTES = {
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svr": {'C': 0.8, 'degree': 2, 'epsilon': 0.05, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 1.0, 'loss': 'square', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 500, 'criterion': 'mae'},
+    "ada_boost": {'learning_rate': 0.6, 'loss': 'square', 'n_estimators': 100},
+    "random_forest": {"n_estimators": 200, 'criterion': 'mae'},
     "knn": {"n_neighbors": 7, "metric": "minkowski", "p": 1},
     "lasso": {"alpha": 0.01},
-    "ridge": {"alpha": 0.3},
+    "ridge": {"alpha": 0.4},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.0001, 'epsilon': 0.1, 'l1_ratio': 0.4, 'learning_rate': 'constant', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
+    "sgd": {'alpha': 0.01, 'epsilon': 0.15, 'l1_ratio': 0.15, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
 }
 
 PARAMETERS["ensamble3"] = {
