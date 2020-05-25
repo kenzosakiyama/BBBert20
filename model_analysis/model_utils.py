@@ -193,3 +193,6 @@ def get_minimum_features(regressor_model, x: np.array, y: np.array) -> int:
             n_features = n
 
     return n_features
+
+if __name__ == "__main__":
+    pass
