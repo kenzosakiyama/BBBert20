@@ -1,23 +1,24 @@
 from argparse import ArgumentParser
 from typing import List, Tuple, Dict
 from sklearn.model_selection import KFold, GridSearchCV
+from run_grid_search import load_json
 import pandas as pd 
 import numpy as np 
 import os
 import json
 
 from model_utils import *
+from run_grid_search import load_json
 from datetime import datetime
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.linear_model import LinearRegression
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import AdaBoostRegressor, RandomForestRegressor
-from sklearn.svm import SVR
+from sklearn.feature_selection import RFE
+from sklearn.pipeline import Pipeline
 
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
     parser.add_argument("--model", required=True, type=str)
+    parser.add_argument("--features", required=True, type=str)
 
     parser.add_argument("--folds", type=int, default=10)
 
@@ -35,14 +36,20 @@ def write_results(results: Dict[str, List[float]]) -> None:
     with open("kfold_results.json", "w") as fout:
         json.dump(current_results, fout, indent=2)
 
-def run_kfold(model_name: str, folds: int) -> None:
+def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> None:
 
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
+    feat = features[model_name]
     # norm = False
 
-    data_df = get_data(drop_columns=REMOVE, normalize=norm)
+    data_df = get_data(feat, normalize=norm)
+    # Feature selection:
+    print(f"- Model {model_name}")
+    print(f"-- Features: {data_df.columns.to_list()}")
+    print(f"-- Parameters: {params}")
+    
 
     x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
     y = np.ravel(y)
@@ -54,7 +61,8 @@ def run_kfold(model_name: str, folds: int) -> None:
             X_train, X_test = x[train_index], x[test_index]
             y_train, y_test = y[train_index], y[test_index]
 
-            model = regressor_model(**params)
+            model = regressor_model(**params) 
+
             model.fit(X_train, y_train)
             current_metrics = evaluate(model, (X_test, y_test))
 
@@ -64,6 +72,7 @@ def run_kfold(model_name: str, folds: int) -> None:
     # Averaging metrics
     for metric in _metrics.keys():
         _metrics[metric] = (np.mean(_metrics[metric]), np.std(_metrics[metric]))
+
     _metrics["folds"] = folds
     _metrics["model"] = model_name
     _metrics["time"] = str(datetime.now())
@@ -79,5 +88,6 @@ if __name__ == "__main__":
 
     model = args.model
     folds = args.folds
+    features = load_json(args.features)
 
-    run_kfold(model, folds)
+    run_kfold(model, features, folds)
