@@ -19,7 +19,6 @@ def build_parser() -> ArgumentParser:
 
     parser.add_argument("--model", required=True, type=str)
     parser.add_argument("--parameters", required=True, type=str, help="Path to a JSON file with the parameters.")
-    parser.add_argument("--features", required=True, type=str, help="Path to a JSON file with the selected features.")
     
     parser.add_argument("--folds", type=int, default=10)
     parser.add_argument("--n_jobs", type=int, default=3)
@@ -61,7 +60,9 @@ if __name__ == "__main__":
 
 
     parameters = load_json(args.parameters)
-    features = load_json(args.features)
+    # features = load_json(args.features)
+    features = COLUMNS
 
 
-    run_grid_search(model, args.model,  parameters, folds,  normalize, jobs, features[args.model])
+
+    run_grid_search(model, args.model,  parameters, folds,  normalize, jobs, features)

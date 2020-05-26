@@ -18,7 +18,6 @@ def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
 
     parser.add_argument("--model", required=True, type=str)
-    parser.add_argument("--features", required=True, type=str)
 
     parser.add_argument("--folds", type=int, default=10)
 
@@ -36,15 +35,16 @@ def write_results(results: Dict[str, List[float]]) -> None:
     with open("kfold_results.json", "w") as fout:
         json.dump(current_results, fout, indent=2)
 
-def run_kfold(model_name: str, features: Dict[str, List[str]], folds: int) -> None:
+def run_kfold(model_name: str, features: List[str], folds: int) -> None:
 
     params = PARAMETERS[model_name]
     regressor_model = MODELS[model_name]
     norm = NORMALIZE[model_name]
-    feat = features[model_name]
+    # feat = features[model_name]
+    # To use ALL features
     # norm = False
 
-    data_df = get_data(feat, normalize=norm)
+    data_df = get_data(features, normalize=norm)
     # Feature selection:
     print(f"- Model {model_name}")
     print(f"-- Features: {data_df.columns.to_list()}")
@@ -88,6 +88,6 @@ if __name__ == "__main__":
 
     model = args.model
     folds = args.folds
-    features = load_json(args.features)
+    features = COLUMNS
 
     run_kfold(model, features, folds)
