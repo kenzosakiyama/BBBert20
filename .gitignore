@@ -104,6 +104,7 @@ venv.bak/
 .mypy_cache/
 .idea/
 analysis/data
+regression/
 *.txt
 *.csv
 *.json

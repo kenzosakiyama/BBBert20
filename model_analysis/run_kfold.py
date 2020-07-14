@@ -15,10 +15,9 @@ from sklearn.feature_selection import RFE
 from sklearn.pipeline import Pipeline
 
 def build_parser() -> ArgumentParser:
+
     parser = ArgumentParser()
-
     parser.add_argument("--model", required=True, type=str)
-
     parser.add_argument("--folds", type=int, default=10)
 
     return parser
