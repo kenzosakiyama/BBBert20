@@ -1,5 +1,8 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 analysis/data
 *.txt
 *.csv
 *.json
-__pycache__/
