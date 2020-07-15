@@ -103,8 +103,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 .idea/
+analysis/tweets_analysis.ipynb
 analysis/data
 regression/
+classification/
 *.txt
 *.csv
 *.json
