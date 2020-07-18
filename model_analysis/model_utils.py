@@ -53,16 +53,19 @@ PARAMETERS_ALL_ATRIBUTES = {
     "sgd": {'alpha': 0.01, 'epsilon': 0.15, 'l1_ratio': 0.65, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'l2'}
 }
 
+# 10 {'C': 3.5, 'degree': 5, 'epsilon': 0.05, 'gamma': 2.6, 'kernel': 'rbf'}
+# 17 "svr": {'C': 4, 'degree': 4, 'epsilon': 0.1, 'gamma': 2.1, 'kernel': 'rbf'} 
+
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svr": {'C': 0.95, 'degree': 4, 'epsilon': 0.1, 'kernel': 'rbf'},
+    "svr":  {'C': 3.5, 'degree': 5, 'epsilon': 0.05, 'gamma': 2.6, 'kernel': 'rbf'} ,
     "ada_boost": {'learning_rate': 0.85, 'loss': 'linear', 'n_estimators': 100},
     "random_forest": {"n_estimators": 500},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 2},
     "lasso": {"alpha": 0.01},
     "ridge": {"alpha": 0.5},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.001, 'epsilon': 0.15, 'l1_ratio': 0.7, 'learning_rate': 'constant', 'loss': 'epsilon_insensitive', 'penalty': 'l1'}
+    "sgd": {'alpha': 0.01, 'epsilon': 0.25, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
 }
 
 PARAMETERS["ensamble3"] = {
@@ -73,9 +76,10 @@ PARAMETERS["ensamble3"] = {
     ]
 }
 
+# 15 -> 15
 PARAMETERS["ensamble2"] = {
     "base_estimator": SVR(**PARAMETERS["svr"]),
-    "n_estimators": 5
+    "n_estimators": 15
 }
 
 NORMALIZE = {

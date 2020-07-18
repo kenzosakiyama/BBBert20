@@ -109,4 +109,3 @@ regression/
 classification/
 *.txt
 *.csv
-*.json
