@@ -108,4 +108,6 @@ analysis/data
 regression/
 classification/
 *.txt
+paredoes.csv
+model_analysis/kfold_results.json
 model_analysis/grid_search_results/*.csv
