@@ -108,4 +108,4 @@ analysis/data
 regression/
 classification/
 *.txt
-*.csv
+model_analysis/grid_search_results/*.csv

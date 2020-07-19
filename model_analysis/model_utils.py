@@ -58,14 +58,14 @@ PARAMETERS_ALL_ATRIBUTES = {
 
 PARAMETERS = {
     "linear_regression": {"normalize": False},
-    "svr":  {'C': 3.5, 'degree': 5, 'epsilon': 0.05, 'gamma': 2.6, 'kernel': 'rbf'} ,
+    "svr":  {'C': 4, 'degree': 4, 'epsilon': 0.1, 'gamma': 2.1, 'kernel': 'rbf'},
     "ada_boost": {'learning_rate': 0.85, 'loss': 'linear', 'n_estimators': 100},
-    "random_forest": {"n_estimators": 500},
+    "random_forest": {"n_estimators": 200},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 2},
     "lasso": {"alpha": 0.01},
     "ridge": {"alpha": 0.5},
     "elastic_net": {"alpha": 0.1, "l1_ratio": 0.0},
-    "sgd": {'alpha': 0.01, 'epsilon': 0.25, 'l1_ratio': 0.1, 'learning_rate': 'optimal', 'loss': 'epsilon_insensitive', 'penalty': 'elasticnet'}
+    "sgd": {'alpha': 0.01, 'epsilon': 0.25, 'l1_ratio': 0.25, 'learning_rate': 'optimal', 'loss': 'huber', 'penalty': 'l2'}
 }
 
 PARAMETERS["ensamble3"] = {
