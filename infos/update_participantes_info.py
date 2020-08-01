@@ -23,8 +23,6 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 if __name__ == "__main__":
-    
-    #TODO adicionar mais informações para os participantes
 
     with open("participantes_info.json", "r") as f:
         participantes_info = json.load(f)

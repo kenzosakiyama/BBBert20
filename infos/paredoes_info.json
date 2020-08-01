@@ -237,6 +237,40 @@
         "quantidade_de_votos": 0,
         "candidatos": [
             {
+                "nome": "ivy",
+                "porcentagem": 74.17
+            },
+            {
+                "nome": "thelma",
+                "porcentagem": 19.52
+            },
+            {
+                "nome": "rafa",
+                "porcentagem": 6.31
+            }
+        ]
+    },
+    "paredao16": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
+                "nome": "mari",
+                "porcentagem": 54.16
+            },
+            {
+                "nome": "manu_gavassi",
+                "porcentagem": 41.26
+            },
+            {
+                "nome": "babu",
+                "porcentagem": 4.58
+            }
+        ]
+    },
+    "paredao17": {
+        "quantidade_de_votos": 0,
+        "candidatos": [
+            {
                 "nome": "babu",
                 "porcentagem": 57.15
             },
