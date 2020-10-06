@@ -107,16 +107,15 @@ def minmax_normalize(df: pd.DataFrame) -> pd.DataFrame:
     x, y = 0, 0
     
     for column in COLUMNS + DEFAULT_COLUMNS:
-        if column == "paredao" or column == "nome" or "_pct" in column: continue
+        # Don't normalize in the following cases
+        if column == "paredao" or column == "nome" or "_pct" in column or column == "rejeicao": continue
         # print(column)
         min_value = df[column].min()
         max_value = df[column].max()
 
-        if column == "rejeicao": x, y = min_value, (max_value - min_value)
-
         df[column] = (df[column] - min_value) / (max_value - min_value)
     
-    return df, x, y
+    return df
 
 def fix_types(df: pd.DataFrame) -> pd.DataFrame:
 
@@ -141,7 +140,7 @@ def get_train_test(test_paredao: int, features: List[str], normalize: bool = Tru
 
     data_df = fix_types(data_df)
 
-    if normalize: data_df, mean, std = minmax_normalize(data_df)
+    if normalize: data_df = minmax_normalize(data_df)
 
     # Feature selection
     data_df = data_df[features + DEFAULT_COLUMNS]
@@ -149,7 +148,7 @@ def get_train_test(test_paredao: int, features: List[str], normalize: bool = Tru
     test_df = data_df[data_df["paredao"] == test_paredao]
     train_df = data_df.drop(index=test_df.index, axis=0)
 
-    return (train_df, test_df) if not normalize else (train_df, test_df, mean, std)
+    return train_df, test_df
 
 def get_data(features: List[str], normalize: bool = True) -> pd.DataFrame:
 
@@ -165,7 +164,7 @@ def get_data(features: List[str], normalize: bool = True) -> pd.DataFrame:
         data_df = data_df.append(current, ignore_index=True, sort=False)
 
     data_df = fix_types(data_df)
-    if normalize: data_df, _, _ = minmax_normalize(data_df)
+    if normalize: data_df = minmax_normalize(data_df)
     data_df = data_df[features + DEFAULT_COLUMNS]
 
     return data_df
