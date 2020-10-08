@@ -44,13 +44,14 @@ def run_kfold(model_name: str, features: List[str], folds: int) -> None:
     # norm = False
 
     data_df = get_data(features, normalize=norm)
+    print(data_df[["paredao", "nome", "rejeicao"]].head(10))
     # Feature selection:
     print(f"- Model {model_name}")
     print(f"-- Features: {data_df.columns.to_list()}")
     print(f"-- Parameters: {params}")
     
 
-    x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df.drop(columns=data_df.columns[:-1], axis=1).to_numpy()
+    x, y = data_df.drop(columns=["paredao", "nome", "rejeicao"], axis=1).to_numpy(), data_df["rejeicao"].to_numpy()
     y = np.ravel(y)
     _metrics = {metric: [] for metric in METRICS.keys()}
 
