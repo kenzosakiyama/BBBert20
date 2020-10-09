@@ -62,11 +62,11 @@ if __name__ == "__main__":
     jobs = args.n_jobs
 
 
-    parameters = load_json(args.parameters)
-    #parameters = {
-    # "base_estimator": [SVR(**PARAMETERS["svr"])],
-    # "n_estimators": [2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-    #}
+    #parameters = load_json(args.parameters)
+    parameters = {
+     "base_estimator": [SVR(**PARAMETERS["svr"])],
+     "n_estimators": [2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    }
 
     # features = load_json(args.features)
     features = COLUMNS

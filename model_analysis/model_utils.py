@@ -59,7 +59,7 @@ PARAMETERS_ALL_ATRIBUTES = {
 PARAMETERS = {
     "linear_regression": {"normalize": False},
     "svr": {'C': 3.5, 'degree': 2, 'epsilon': 0.05, 'gamma': 2.6, 'kernel': 'rbf'},
-    "ada_boost": {'learning_rate': 0.2, 'loss': 'linear', 'n_estimators': 5},
+    "ada_boost": {'learning_rate': 0.35, 'loss': 'exponential', 'n_estimators': 5},
     "random_forest": {"n_estimators": 200},
     "knn": {"n_neighbors": 3, "metric": "minkowski", "p": 2},
     "lasso": {"alpha": 0.01},
